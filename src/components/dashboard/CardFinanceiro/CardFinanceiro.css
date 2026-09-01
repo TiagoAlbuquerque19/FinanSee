@@ -1,0 +1,19 @@
+.card-financeiro {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  background-color: white;
+
+  max-width: 300px;
+}
+
+.card-financeiro h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.card-financeiro strong {
+  font-size: 28px;
+}
