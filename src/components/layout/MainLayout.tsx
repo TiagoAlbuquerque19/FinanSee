@@ -7,8 +7,14 @@ import "./MainLayout.css";
 function MainLayout() {
   const [receitas, setReceitas] = useState(7000);
   const [despesas, setDespesas] = useState(1800);
-
+  const [descricao, setDescricao] = useState("");
+  const [valor, setValor] = useState("");
   const saldo = receitas - despesas;
+
+  function adicionarTransacao() {
+    console.log(descricao);
+    console.log(valor);
+  }
   return (
     <>
       <Header nome="Tiago"></Header>
@@ -19,14 +25,38 @@ function MainLayout() {
           <div className="cards">
             <CardFinanceiro
               titulo="Saldo atual"
-              valor={`R$ ${saldo}`}
+              valor={`R$ ${saldo.toFixed(2)}`}
             ></CardFinanceiro>
-            <CardFinanceiro titulo="Receitas" valor={`R$ ${receitas}`} />
-            <CardFinanceiro titulo="Despesas" valor={`R$ ${despesas}`} />
+            <CardFinanceiro
+              titulo="Receitas"
+              valor={`R$ ${receitas.toFixed(2)}`}
+            />
+            <CardFinanceiro
+              titulo="Despesas"
+              valor={`R$ ${despesas.toFixed(2)}`}
+            />
           </div>
-          <button onClick={() => setReceitas(receitas + 500)}>
+          <button onClick={() => setReceitas((valorAtual) => valorAtual + 500)}>
             Adicionar R$ 500
           </button>
+          <button onClick={() => setDespesas((valorAtual) => valorAtual + 100)}>
+            Adicionar 100 reais de despesa
+          </button>
+          <h3>Nova transação</h3>;
+          <input
+            type="text"
+            placeholder="Descrição"
+            value={descricao}
+            onChange={(evento) => setDescricao(evento.target.value)}
+          />
+          ;
+          <input
+            type="number"
+            placeholder="Valor"
+            value={valor}
+            onChange={(evento) => setValor(evento.target.value)}
+          />
+          ;<button onClick={adicionarTransacao}>Adicionar transação</button>
         </main>
       </div>
     </>
