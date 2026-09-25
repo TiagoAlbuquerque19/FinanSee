@@ -4,17 +4,42 @@ import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
 import { useState } from "react";
 import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
+import type { Transacao, TipoTransacao } from "../../types/transacao";
 
 function MainLayout() {
-  const [receitas, setReceitas] = useState(7000);
-  const [despesas, setDespesas] = useState(1800);
+  const [transacoes, setTransacoes] = useState<Transacao[]>([]);
+  const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
+  const receitas = transacoes
+    .filter((t) => t.tipo === "receita")
+    .reduce((soma, t) => soma + t.valor, 0);
+
+  const despesas = transacoes
+    .filter((t) => t.tipo === "despesa")
+    .reduce((soma, t) => soma + t.valor, 0);
+
   const saldo = receitas - despesas;
 
   function adicionarTransacao() {
-    console.log(descricao);
-    console.log(valor);
+    const valorNumerico = Number(valor);
+
+    if (descricao.trim() === "" || valorNumerico <= 0) {
+      alert("Preencha a descrição e um valor maior que zero.");
+      return;
+    }
+
+    const novaTransacao: Transacao = {
+      id: crypto.randomUUID(),
+      descricao: descricao.trim(),
+      valor: valorNumerico,
+      tipo,
+      data: new Date().toISOString(),
+    };
+
+    setTransacoes((listaAtual) => [novaTransacao, ...listaAtual]);
+    setDescricao("");
+    setValor("");
   }
   return (
     <>
@@ -28,12 +53,13 @@ function MainLayout() {
             <CardFinanceiro titulo="Receitas" valor={formatarMoeda(receitas)} />
             <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
           </div>
-          <button onClick={() => setReceitas((valorAtual) => valorAtual + 500)}>
-            Adicionar R$ 500
-          </button>
-          <button onClick={() => setDespesas((valorAtual) => valorAtual + 100)}>
-            Adicionar 100 reais de despesa
-          </button>
+          <select
+            value={tipo}
+            onChange={(evento) => setTipo(evento.target.value as TipoTransacao)}
+          >
+            <option value="despesa">Despesa</option>
+            <option value="receita">Receita</option>
+          </select>
           <h3>Nova transação</h3>
           <input
             type="text"
