@@ -1,7 +1,7 @@
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
 import type { Transacao, TipoTransacao } from "../../types/transacao";
@@ -11,7 +11,12 @@ function MainLayout() {
   const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("transacoes", JSON.stringify(transacoes));
+  }, [transacoes]);
   let receitas = 0;
+
   let despesas = 0;
 
   for (const transacao of transacoes) {
