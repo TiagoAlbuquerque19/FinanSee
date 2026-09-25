@@ -6,8 +6,17 @@ import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
 import type { Transacao, TipoTransacao } from "../../types/transacao";
 
+function carregarTransacoes(): Transacao[] {
+  const dadosSalvos = localStorage.getItem("transacoes");
+
+  if (dadosSalvos === null) {
+    return [];
+  }
+  return JSON.parse(dadosSalvos);
+}
+
 function MainLayout() {
-  const [transacoes, setTransacoes] = useState<Transacao[]>([]);
+  const [transacoes, setTransacoes] = useState<Transacao[]>(carregarTransacoes);
   const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
