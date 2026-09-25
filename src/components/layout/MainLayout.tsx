@@ -74,13 +74,6 @@ function MainLayout() {
             <CardFinanceiro titulo="Receitas" valor={formatarMoeda(receitas)} />
             <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
           </div>
-          <select
-            value={tipo}
-            onChange={(evento) => setTipo(evento.target.value as TipoTransacao)}
-          >
-            <option value="despesa">Despesa</option>
-            <option value="receita">Receita</option>
-          </select>
 
           <h3>Nova transação</h3>
           <input
