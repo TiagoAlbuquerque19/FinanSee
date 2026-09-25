@@ -42,21 +42,20 @@ function MainLayout() {
           <button onClick={() => setDespesas((valorAtual) => valorAtual + 100)}>
             Adicionar 100 reais de despesa
           </button>
-          <h3>Nova transação</h3>;
+          <h3>Nova transação</h3>
           <input
             type="text"
             placeholder="Descrição"
             value={descricao}
             onChange={(evento) => setDescricao(evento.target.value)}
           />
-          ;
           <input
             type="number"
             placeholder="Valor"
             value={valor}
             onChange={(evento) => setValor(evento.target.value)}
           />
-          ;<button onClick={adicionarTransacao}>Adicionar transação</button>
+          <button onClick={adicionarTransacao}>Adicionar transação</button>
         </main>
       </div>
     </>
