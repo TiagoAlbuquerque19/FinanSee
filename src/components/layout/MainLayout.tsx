@@ -3,6 +3,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
 import { useState } from "react";
 import "./MainLayout.css";
+import { formatarMoeda } from "../../utils/formatarMoeda";
 
 function MainLayout() {
   const [receitas, setReceitas] = useState(7000);
@@ -17,24 +18,15 @@ function MainLayout() {
   }
   return (
     <>
-      <Header nome="Tiago"></Header>
+      <Header nome="Tiago" />
       <div className="layout">
         <Sidebar></Sidebar>
         <main>
           <h2>Dashboard</h2>
           <div className="cards">
-            <CardFinanceiro
-              titulo="Saldo atual"
-              valor={`R$ ${saldo.toFixed(2)}`}
-            ></CardFinanceiro>
-            <CardFinanceiro
-              titulo="Receitas"
-              valor={`R$ ${receitas.toFixed(2)}`}
-            />
-            <CardFinanceiro
-              titulo="Despesas"
-              valor={`R$ ${despesas.toFixed(2)}`}
-            />
+            <CardFinanceiro titulo="Saldo atual" valor={formatarMoeda(saldo)} />
+            <CardFinanceiro titulo="Receitas" valor={formatarMoeda(receitas)} />
+            <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
           </div>
           <button onClick={() => setReceitas((valorAtual) => valorAtual + 500)}>
             Adicionar R$ 500
