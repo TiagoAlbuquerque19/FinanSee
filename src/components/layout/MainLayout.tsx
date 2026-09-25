@@ -11,13 +11,16 @@ function MainLayout() {
   const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
-  const receitas = transacoes
-    .filter((t) => t.tipo === "receita")
-    .reduce((soma, t) => soma + t.valor, 0);
+  let receitas = 0;
+  let despesas = 0;
 
-  const despesas = transacoes
-    .filter((t) => t.tipo === "despesa")
-    .reduce((soma, t) => soma + t.valor, 0);
+  for (const transacao of transacoes) {
+    if (transacao.tipo === "receita") {
+      receitas = receitas + transacao.valor;
+    } else {
+      despesas = despesas + transacao.valor;
+    }
+  }
 
   const saldo = receitas - despesas;
 
@@ -37,7 +40,7 @@ function MainLayout() {
       data: new Date().toISOString(),
     };
 
-    setTransacoes((listaAtual) => [novaTransacao, ...listaAtual]);
+    setTransacoes([novaTransacao, ...transacoes]);
     setDescricao("");
     setValor("");
   }
