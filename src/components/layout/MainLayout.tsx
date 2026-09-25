@@ -67,6 +67,7 @@ function MainLayout() {
             <option value="despesa">Despesa</option>
             <option value="receita">Receita</option>
           </select>
+
           <h3>Nova transação</h3>
           <input
             type="text"
@@ -80,6 +81,13 @@ function MainLayout() {
             value={valor}
             onChange={(evento) => setValor(evento.target.value)}
           />
+          <select
+            value={tipo}
+            onChange={(evento) => setTipo(evento.target.value as TipoTransacao)}
+          >
+            <option value="despesa">Despesa</option>
+            <option value="receita">Receita</option>
+          </select>
           <button onClick={adicionarTransacao}>Adicionar transação</button>
           <h3>Transações</h3>
           {transacoes.length === 0 ? (
