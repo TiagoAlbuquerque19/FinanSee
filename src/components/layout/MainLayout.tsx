@@ -74,6 +74,20 @@ function MainLayout() {
             onChange={(evento) => setValor(evento.target.value)}
           />
           <button onClick={adicionarTransacao}>Adicionar transação</button>
+          <h3>Transações</h3>
+          {transacoes.length === 0 ? (
+            <p>Nenhuma transação cadastrada ainda.</p>
+          ) : (
+            <ul>
+              {transacoes.map((transacao) => (
+                <li key={transacao.id}>
+                  {transacao.descricao} —{" "}
+                  {transacao.tipo === "despesa" ? "-" : "+"}
+                  {formatarMoeda(transacao.valor)}
+                </li>
+              ))}
+            </ul>
+          )}
         </main>
       </div>
     </>
