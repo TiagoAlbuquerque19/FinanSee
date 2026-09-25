@@ -44,6 +44,10 @@ function MainLayout() {
     setDescricao("");
     setValor("");
   }
+  function excluirTransacao(id: string) {
+    const novaLista = transacoes.filter((transacao) => transacao.id !== id);
+    setTransacoes(novaLista);
+  }
   return (
     <>
       <Header nome="Tiago" />
@@ -87,6 +91,9 @@ function MainLayout() {
                   {transacao.descricao} —{" "}
                   {transacao.tipo === "despesa" ? "-" : "+"}
                   {formatarMoeda(transacao.valor)}
+                  <button onClick={() => excluirTransacao(transacao.id)}>
+                    Excluir
+                  </button>
                 </li>
               ))}
             </ul>
