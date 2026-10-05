@@ -1,7 +1,12 @@
 import MainLayout from "./components/layout/MainLayout";
+import FinancasProvider from "./context/FinancasProvider";
 
 function App() {
-  return <MainLayout />;
+  return (
+    <FinancasProvider>
+      <MainLayout />
+    </FinancasProvider>
+  );
 }
 
 export default App;
