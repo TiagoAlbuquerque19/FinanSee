@@ -216,3 +216,20 @@ select:focus {
   padding: 0;
   border-radius: 10px;
 }
+
+/* Botão de excluir: discreto, fica vermelho ao passar o mouse */
+.botao-excluir {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--cor-texto-suave);
+}
+
+.botao-excluir:hover {
+  background: var(--cor-despesa-suave);
+  color: var(--cor-despesa);
+}

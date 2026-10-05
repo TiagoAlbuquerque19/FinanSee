@@ -1,3 +1,5 @@
+import { Trash2 } from "lucide-react";
+import IconeCategoria from "../../components/categorias/IconeCategoria/IconeCategoria";
 import NovaCategoriaForm from "../../components/categorias/NovaCategoriaForm/NovaCategoriaForm";
 import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
 import { useFinancas } from "../../hooks/useFinancas";
@@ -59,6 +61,7 @@ function CategoriasPage() {
           <ul className="lista-categorias">
             {todasCategoriasDespesa.map((nome) => (
               <li key={nome}>
+                <IconeCategoria categoria={nome} tipo="despesa" />
                 <span className="lista-categorias-nome">
                   {nome}
                   {categoriasPersonalizadas.includes(nome) && (
@@ -70,12 +73,12 @@ function CategoriasPage() {
                 </span>
                 {categoriasPersonalizadas.includes(nome) ? (
                   <button
-                    className="transacao-excluir"
+                    className="botao-excluir"
                     onClick={() => confirmarExclusao(nome)}
                     aria-label={`Excluir categoria ${nome}`}
                     title="Excluir"
                   >
-                    ✕
+                    <Trash2 size={16} aria-hidden="true" />
                   </button>
                 ) : (
                   // Espaço vazio do tamanho do botão, para alinhar os valores
@@ -91,6 +94,7 @@ function CategoriasPage() {
           <ul className="lista-categorias">
             {categoriasReceita.map((nome) => (
               <li key={nome}>
+                <IconeCategoria categoria={nome} tipo="receita" />
                 <span className="lista-categorias-nome">{nome}</span>
                 <span className="lista-categorias-valor">
                   {formatarMoeda(totalDaCategoria(nome, "receita"))}

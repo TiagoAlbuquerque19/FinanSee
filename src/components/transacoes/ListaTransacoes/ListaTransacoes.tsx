@@ -1,6 +1,8 @@
 import type { Transacao } from "../../../types/transacao";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import { formatarData } from "../../../utils/datas";
+import { Trash2 } from "lucide-react";
+import IconeCategoria from "../../categorias/IconeCategoria/IconeCategoria";
 import "./ListaTransacoes.css";
 
 interface ListaTransacoesProps {
@@ -35,6 +37,11 @@ function ListaTransacoes({
     <ul className="lista-transacoes">
       {transacoesVisiveis.map((transacao) => (
         <li key={transacao.id} className="transacao">
+          <IconeCategoria
+            categoria={transacao.categoria}
+            tipo={transacao.tipo}
+          />
+
           <div className="transacao-info">
             <strong>{transacao.descricao}</strong>
             <span>
@@ -42,18 +49,20 @@ function ListaTransacoes({
             </span>
           </div>
 
-          <span className={`transacao-valor transacao-valor--${transacao.tipo}`}>
-            {transacao.tipo === "despesa" ? "- " : "+ "}
+          <span
+            className={`transacao-valor transacao-valor--${transacao.tipo}`}
+          >
+            {transacao.tipo === "despesa" ? "− " : "+ "}
             {formatarMoeda(transacao.valor)}
           </span>
 
           <button
-            className="transacao-excluir"
+            className="botao-excluir"
             onClick={() => onExcluir(transacao.id)}
             aria-label={`Excluir ${transacao.descricao}`}
             title="Excluir"
           >
-            ✕
+            <Trash2 size={16} aria-hidden="true" />
           </button>
         </li>
       ))}

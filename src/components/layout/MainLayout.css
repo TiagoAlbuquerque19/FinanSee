@@ -77,3 +77,11 @@
     gap: 12px;
   }
 }
+
+/* Itens de grade podem encolher abaixo do tamanho do conteúdo
+   (sem isso, um texto comprido empurra a página para o lado no celular) */
+.grade-dashboard > *,
+.grade-transacoes > *,
+.grade-categorias > * {
+  min-width: 0;
+}

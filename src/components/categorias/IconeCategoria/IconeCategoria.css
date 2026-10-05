@@ -1,0 +1,18 @@
+.icone-categoria {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+.icone-categoria--despesa {
+  background: var(--cor-fundo);
+  color: var(--cor-texto-suave);
+}
+
+.icone-categoria--receita {
+  background: var(--cor-receita-suave);
+  color: var(--cor-receita);
+}
