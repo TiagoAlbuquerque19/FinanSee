@@ -1,32 +1,44 @@
 import { NavLink } from "react-router";
+import {
+  ArrowLeftRight,
+  Bell,
+  LayoutDashboard,
+  Tags,
+  Target,
+} from "lucide-react";
 import "./Sidebar.css";
 
-// O NavLink sabe se o endereço atual é o dele (isActive)
-// e assim a classe "ativo" muda sozinha de item
-function classeDoLink({ isActive }: { isActive: boolean }) {
-  return isActive ? "ativo" : "";
-}
+// Os itens do menu ficam numa lista: para criar uma página nova no menu,
+// basta adicionar uma linha aqui
+const itensMenu = [
+  { caminho: "/", nome: "Dashboard", Icone: LayoutDashboard },
+  { caminho: "/transacoes", nome: "Transações", Icone: ArrowLeftRight },
+  { caminho: "/metas", nome: "Metas", Icone: Target },
+  { caminho: "/lembretes", nome: "Lembretes", Icone: Bell },
+  { caminho: "/categorias", nome: "Categorias", Icone: Tags },
+];
 
 function Sidebar() {
   return (
     <aside className="sidebar">
-      <nav>
-        {/* "end" faz o Dashboard só ficar ativo exatamente em "/" */}
-        <NavLink to="/" end className={classeDoLink}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/transacoes" className={classeDoLink}>
-          Transações
-        </NavLink>
-        <NavLink to="/metas" className={classeDoLink}>
-          Metas
-        </NavLink>
-        <NavLink to="/lembretes" className={classeDoLink}>
-          Lembretes
-        </NavLink>
-        <NavLink to="/categorias" className={classeDoLink}>
-          Categorias
-        </NavLink>
+      <div className="sidebar-marca">
+        <span className="logo">F</span>
+        <strong>FinanSee</strong>
+      </div>
+
+      <nav className="sidebar-nav">
+        {itensMenu.map(({ caminho, nome, Icone }) => (
+          <NavLink
+            key={caminho}
+            to={caminho}
+            // "end" faz o Dashboard só ficar ativo exatamente em "/"
+            end={caminho === "/"}
+            className={({ isActive }) => (isActive ? "ativo" : "")}
+          >
+            <Icone size={20} aria-hidden="true" />
+            <span>{nome}</span>
+          </NavLink>
+        ))}
       </nav>
     </aside>
   );

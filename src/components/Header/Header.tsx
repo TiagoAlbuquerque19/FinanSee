@@ -4,19 +4,41 @@ interface HeaderProps {
   nome: string;
 }
 
+// "Bom dia", "Boa tarde" ou "Boa noite", conforme a hora
+function saudacao(): string {
+  const hora = new Date().getHours();
+
+  if (hora < 12) {
+    return "Bom dia";
+  }
+
+  if (hora < 18) {
+    return "Boa tarde";
+  }
+
+  return "Boa noite";
+}
+
 function Header({ nome }: HeaderProps) {
+  const dataDeHoje = new Date().toLocaleDateString("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <header className="header">
-      <div className="header-marca">
-        <span className="header-logo">F</span>
-        <div>
-          <h1>FinanSee</h1>
-          <span className="header-subtitulo">Finanças pessoais</span>
-        </div>
+      {/* O logo só aparece aqui no celular, onde a sidebar fica embaixo */}
+      <span className="logo header-logo">F</span>
+
+      <div className="header-saudacao">
+        <strong>
+          {saudacao()}, {nome}
+        </strong>
+        <span>{dataDeHoje}</span>
       </div>
 
-      <div className="header-usuario">
-        <span>Olá, {nome}</span>
+      <div className="header-acoes">
         {/* A primeira letra do nome vira o "avatar" */}
         <span className="header-avatar">{nome[0]}</span>
       </div>

@@ -154,6 +154,20 @@ select:focus {
   margin-bottom: 16px;
 }
 
+/* Logo do FinanSee: quadrado com a letra F */
+.logo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--cor-primaria);
+  color: var(--cor-texto-botao);
+  font-weight: 700;
+  font-size: 18px;
+}
+
 /* Texto para quando uma lista está vazia */
 .texto-vazio {
   color: var(--cor-texto-suave);
