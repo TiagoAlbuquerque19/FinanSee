@@ -4,6 +4,7 @@ import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
 import RankingCategorias from "../../components/categorias/RankingCategorias/RankingCategorias";
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
+import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
 import { calcularResumo } from "../../utils/calcularResumo";
 import { mudarMes, nomeDoMes } from "../../utils/datas";
 import { useFinancas } from "../../hooks/useFinancas";
@@ -17,6 +18,7 @@ function DashboardPage() {
     setMesSelecionado,
     adicionarTransacao,
     excluirTransacao,
+    metas,
   } = useFinancas();
 
   const atual = calcularResumo(transacoesDoMes);
@@ -73,6 +75,16 @@ function DashboardPage() {
           <section className="painel">
             <h3>Onde você mais gasta</h3>
             <RankingCategorias transacoes={transacoesDoMes} />
+          </section>
+
+          <section className="painel">
+            <div className="painel-topo">
+              <h3>Suas metas</h3>
+              <Link to="/metas" className="link">
+                Ver todas →
+              </Link>
+            </div>
+            <ResumoMetas metas={metas} />
           </section>
         </div>
       </div>

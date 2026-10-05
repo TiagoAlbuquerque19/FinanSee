@@ -1,0 +1,29 @@
+.resumo-metas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resumo-metas-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.resumo-metas-linha span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resumo-metas-valor {
+  color: var(--cor-texto-suave);
+  font-weight: 400;
+  font-size: 14px;
+  white-space: nowrap;
+}
