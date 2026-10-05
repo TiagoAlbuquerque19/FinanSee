@@ -5,5 +5,6 @@ export interface Transacao {
   descricao: string;
   valor: number;
   tipo: TipoTransacao;
+  categoria: string;
   data: string;
 }
