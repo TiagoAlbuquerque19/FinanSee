@@ -21,3 +21,14 @@
 .seletor-mes-nome::first-letter {
   text-transform: uppercase;
 }
+
+@media (max-width: 768px) {
+  .seletor-mes {
+    width: 100%;
+  }
+
+  .seletor-mes-nome {
+    min-width: 0;
+    flex: 1;
+  }
+}

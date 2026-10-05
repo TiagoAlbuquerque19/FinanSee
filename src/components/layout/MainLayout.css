@@ -47,3 +47,33 @@
   flex-direction: column;
   gap: 24px;
 }
+
+/* ===== Telas menores =====
+   @media aplica as regras só quando a tela tem até aquela largura */
+
+/* Tablets: formulários e ranking um embaixo do outro */
+@media (max-width: 960px) {
+  .grade-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Celulares: sidebar vira uma barra em cima e os cards ficam empilhados */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .conteudo {
+    /* Em coluna, a margem automática faria o conteúdo crescer além da tela */
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

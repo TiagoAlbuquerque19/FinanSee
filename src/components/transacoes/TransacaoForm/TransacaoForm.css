@@ -19,3 +19,10 @@
 .transacao-form button {
   margin-top: 4px;
 }
+
+/* Em telas bem pequenas, um campo por linha */
+@media (max-width: 420px) {
+  .transacao-form {
+    grid-template-columns: 1fr;
+  }
+}

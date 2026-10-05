@@ -30,3 +30,22 @@
   background: var(--cor-primaria-suave);
   color: var(--cor-primaria);
 }
+
+/* No celular, a sidebar vira uma faixa horizontal que dá para arrastar */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    padding: 8px 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--cor-borda);
+    overflow-x: auto;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+  }
+
+  .sidebar a {
+    white-space: nowrap;
+  }
+}
