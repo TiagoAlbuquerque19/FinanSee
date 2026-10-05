@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./NovaCategoriaForm.css";
 
 interface NovaCategoriaFormProps {
   categoriasExistentes: string[];
@@ -30,15 +31,20 @@ function NovaCategoriaForm({
   }
 
   return (
-    <div>
+    <div className="painel">
       <h3>Nova categoria de despesa</h3>
-      <input
-        type="text"
-        placeholder="Ex.: Pets, Academia..."
-        value={novaCategoria}
-        onChange={(evento) => setNovaCategoria(evento.target.value)}
-      />
-      <button onClick={criarCategoria}>Criar categoria</button>
+      <div className="nova-categoria-linha">
+        <input
+          type="text"
+          placeholder="Ex.: Pets, Academia..."
+          aria-label="Nome da nova categoria"
+          value={novaCategoria}
+          onChange={(evento) => setNovaCategoria(evento.target.value)}
+        />
+        <button className="botao-secundario" onClick={criarCategoria}>
+          Criar
+        </button>
+      </div>
     </div>
   );
 }

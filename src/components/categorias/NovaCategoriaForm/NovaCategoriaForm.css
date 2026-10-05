@@ -1,0 +1,9 @@
+/* Campo e botão na mesma linha */
+.nova-categoria-linha {
+  display: flex;
+  gap: 8px;
+}
+
+.nova-categoria-linha button {
+  flex-shrink: 0;
+}

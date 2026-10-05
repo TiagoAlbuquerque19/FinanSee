@@ -158,3 +158,17 @@ select:focus {
 .texto-vazio {
   color: var(--cor-texto-suave);
 }
+
+/* ===== Campo com rótulo (label + input), usado nos formulários ===== */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo > span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cor-texto-suave);
+}
