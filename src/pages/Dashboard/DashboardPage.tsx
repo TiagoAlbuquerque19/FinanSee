@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import CardFinanceiro from "../../components/dashboard/CardFinanceiro/CardFinanceiro";
 import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
-import RankingCategorias from "../../components/categorias/RankingCategorias/RankingCategorias";
+import GraficoCategorias from "../../components/graficos/GraficoCategorias/GraficoCategorias";
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
 import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
@@ -73,8 +73,8 @@ function DashboardPage() {
 
         <div className="coluna">
           <section className="painel">
-            <h3>Onde você mais gasta</h3>
-            <RankingCategorias transacoes={transacoesDoMes} />
+            <h3>Gastos por categoria</h3>
+            <GraficoCategorias transacoes={transacoesDoMes} />
           </section>
 
           <section className="painel">

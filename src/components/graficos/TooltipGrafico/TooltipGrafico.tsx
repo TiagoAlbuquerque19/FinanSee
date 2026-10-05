@@ -8,7 +8,7 @@ function TooltipGrafico({
   active,
   payload,
   label,
-}: TooltipContentProps<number, string>) {
+}: TooltipContentProps) {
   if (!active || payload.length === 0) {
     return null;
   }
