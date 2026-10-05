@@ -12,6 +12,7 @@ export interface FinancasContextValor {
   adicionarTransacao: (transacao: Transacao) => void;
   excluirTransacao: (id: string) => void;
   criarCategoria: (nome: string) => void;
+  excluirCategoria: (nome: string) => void;
 }
 
 // Começa como null: só passa a ter valor dentro do FinancasProvider

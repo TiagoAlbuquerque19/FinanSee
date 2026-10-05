@@ -3,6 +3,7 @@ import MainLayout from "./components/layout/MainLayout";
 import FinancasProvider from "./context/FinancasProvider";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import TransacoesPage from "./pages/Transacoes/TransacoesPage";
+import CategoriasPage from "./pages/Categorias/CategoriasPage";
 import EmBrevePage from "./pages/EmBreve/EmBrevePage";
 
 function App() {
@@ -19,10 +20,7 @@ function App() {
               path="lembretes"
               element={<EmBrevePage titulo="Lembretes" />}
             />
-            <Route
-              path="categorias"
-              element={<EmBrevePage titulo="Categorias" />}
-            />
+            <Route path="categorias" element={<CategoriasPage />} />
             {/* Qualquer endereço desconhecido volta para o Dashboard */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

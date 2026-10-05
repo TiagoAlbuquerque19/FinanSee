@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import CardFinanceiro from "../../components/dashboard/CardFinanceiro/CardFinanceiro";
 import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
-import NovaCategoriaForm from "../../components/categorias/NovaCategoriaForm/NovaCategoriaForm";
 import RankingCategorias from "../../components/categorias/RankingCategorias/RankingCategorias";
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
@@ -16,7 +15,6 @@ function DashboardPage() {
     setMesSelecionado,
     adicionarTransacao,
     excluirTransacao,
-    criarCategoria,
   } = useFinancas();
 
   let receitas = 0;
@@ -62,11 +60,6 @@ function DashboardPage() {
           <TransacaoForm
             categoriasDespesa={todasCategoriasDespesa}
             onAdicionar={adicionarTransacao}
-          />
-
-          <NovaCategoriaForm
-            categoriasExistentes={todasCategoriasDespesa}
-            onCriar={criarCategoria}
           />
         </div>
 

@@ -81,6 +81,13 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     setCategoriasPersonalizadas([...categoriasPersonalizadas, nome]);
   }
 
+  function excluirCategoria(nome: string) {
+    const novaLista = categoriasPersonalizadas.filter(
+      (categoria) => categoria !== nome,
+    );
+    setCategoriasPersonalizadas(novaLista);
+  }
+
   return (
     <FinancasContext.Provider
       value={{
@@ -93,6 +100,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         adicionarTransacao,
         excluirTransacao,
         criarCategoria,
+        excluirCategoria,
       }}
     >
       {children}
