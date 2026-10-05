@@ -1,0 +1,86 @@
+/* Rosca à esquerda, legenda à direita */
+.grafico-categorias {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.grafico-categorias-rosca {
+  position: relative;
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+}
+
+/* Fica por cima do gráfico, centralizado no buraco da rosca.
+   pointer-events: none deixa o mouse "atravessar" até as fatias */
+.grafico-categorias-centro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.grafico-categorias-centro span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.grafico-categorias-centro strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.grafico-categorias-legenda {
+  flex: 1;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.grafico-categorias-legenda li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grafico-categorias-nome {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Números alinhados em coluna */
+.grafico-categorias-valor,
+.grafico-categorias-porcentagem {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.grafico-categorias-porcentagem {
+  width: 40px;
+  text-align: right;
+  color: var(--cor-texto-suave);
+}
+
+/* Em telas estreitas, a legenda vai para baixo da rosca */
+@media (max-width: 520px) {
+  .grafico-categorias {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grafico-categorias-rosca {
+    margin: 0 auto;
+  }
+}

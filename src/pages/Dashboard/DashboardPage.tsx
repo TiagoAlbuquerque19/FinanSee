@@ -1,11 +1,13 @@
 import { Link } from "react-router";
 import CardFinanceiro from "../../components/dashboard/CardFinanceiro/CardFinanceiro";
 import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
-import RankingCategorias from "../../components/categorias/RankingCategorias/RankingCategorias";
+import GraficoCategorias from "../../components/graficos/GraficoCategorias/GraficoCategorias";
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
+import GraficoMensal from "../../components/graficos/GraficoMensal/GraficoMensal";
 import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
 import { calcularResumo } from "../../utils/calcularResumo";
+import { resumoPorMes } from "../../utils/resumoPorMes";
 import { mudarMes, nomeDoMes } from "../../utils/datas";
 import { useFinancas } from "../../hooks/useFinancas";
 
@@ -73,8 +75,8 @@ function DashboardPage() {
 
         <div className="coluna">
           <section className="painel">
-            <h3>Onde você mais gasta</h3>
-            <RankingCategorias transacoes={transacoesDoMes} />
+            <h3>Gastos por categoria</h3>
+            <GraficoCategorias transacoes={transacoesDoMes} />
           </section>
 
           <section className="painel">
@@ -88,6 +90,11 @@ function DashboardPage() {
           </section>
         </div>
       </div>
+
+      <section className="painel">
+        <h3>Receitas e despesas · últimos 6 meses</h3>
+        <GraficoMensal dados={resumoPorMes(transacoes, mesSelecionado, 6)} />
+      </section>
 
       <section className="painel">
         <div className="painel-topo">

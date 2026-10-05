@@ -1,0 +1,23 @@
+/* Legenda dos gráficos com várias séries */
+.legenda-grafico {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+.legenda-grafico > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Tira o contorno azul que o navegador desenha ao clicar no gráfico */
+.recharts-wrapper:focus,
+.recharts-surface:focus,
+.recharts-sector:focus,
+.recharts-layer:focus {
+  outline: none;
+}

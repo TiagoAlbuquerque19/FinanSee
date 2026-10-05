@@ -1,0 +1,41 @@
+.tooltip-grafico {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+}
+
+.tooltip-grafico-titulo {
+  color: var(--cor-texto-suave);
+  margin-bottom: 2px;
+}
+
+.tooltip-grafico-titulo::first-letter {
+  text-transform: uppercase;
+}
+
+.tooltip-grafico-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* O valor é o destaque; o nome da série vem depois, mais suave */
+.tooltip-grafico-linha strong {
+  color: var(--cor-texto);
+}
+
+.tooltip-grafico-linha span:last-child {
+  color: var(--cor-texto-suave);
+}
+
+.tooltip-grafico-cor {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
