@@ -6,7 +6,7 @@ import TransacoesPage from "./pages/Transacoes/TransacoesPage";
 import CategoriasPage from "./pages/Categorias/CategoriasPage";
 import MetasPage from "./pages/Metas/MetasPage";
 import RelatoriosPage from "./pages/Relatorios/RelatoriosPage";
-import EmBrevePage from "./pages/EmBreve/EmBrevePage";
+import LembretesPage from "./pages/Lembretes/LembretesPage";
 
 function App() {
   return (
@@ -19,10 +19,7 @@ function App() {
             <Route path="transacoes" element={<TransacoesPage />} />
             <Route path="metas" element={<MetasPage />} />
             <Route path="relatorios" element={<RelatoriosPage />} />
-            <Route
-              path="lembretes"
-              element={<EmBrevePage titulo="Lembretes" />}
-            />
+            <Route path="lembretes" element={<LembretesPage />} />
             <Route path="categorias" element={<CategoriasPage />} />
             {/* Qualquer endereço desconhecido volta para o Dashboard */}
             <Route path="*" element={<Navigate to="/" replace />} />
