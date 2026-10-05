@@ -1,6 +1,7 @@
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
+import SeletorMes from "../dashboard/SeletorMes/SeletorMes";
 import NovaCategoriaForm from "../categorias/NovaCategoriaForm/NovaCategoriaForm";
 import RankingCategorias from "../categorias/RankingCategorias/RankingCategorias";
 import TransacaoForm from "../transacoes/TransacaoForm/TransacaoForm";
@@ -10,6 +11,7 @@ import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
 import type { Transacao } from "../../types/transacao";
 import { categoriasDespesa } from "../../data/categorias";
+import { mesAtual } from "../../utils/datas";
 
 function carregarTransacoes(): Transacao[] {
   const dadosSalvos = localStorage.getItem("transacoes");
@@ -45,6 +47,12 @@ function MainLayout() {
   const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
     string[]
   >(carregarCategoriasPersonalizadas);
+  const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
+
+  // Só as transações do mês escolhido. "2026-10-05".slice(0, 7) é "2026-10"
+  const transacoesDoMes = transacoes.filter(
+    (transacao) => transacao.data.slice(0, 7) === mesSelecionado,
+  );
 
   // As categorias criadas pelo usuário entram junto com as de despesa
   const todasCategoriasDespesa = [
@@ -66,7 +74,7 @@ function MainLayout() {
   let receitas = 0;
   let despesas = 0;
 
-  for (const transacao of transacoes) {
+  for (const transacao of transacoesDoMes) {
     if (transacao.tipo === "receita") {
       receitas = receitas + transacao.valor;
     } else {
@@ -96,8 +104,10 @@ function MainLayout() {
         <Sidebar></Sidebar>
         <main>
           <h2>Dashboard</h2>
+          <SeletorMes mes={mesSelecionado} onMudar={setMesSelecionado} />
+
           <div className="cards">
-            <CardFinanceiro titulo="Saldo atual" valor={formatarMoeda(saldo)} />
+            <CardFinanceiro titulo="Saldo do mês" valor={formatarMoeda(saldo)} />
             <CardFinanceiro titulo="Receitas" valor={formatarMoeda(receitas)} />
             <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
           </div>
@@ -113,11 +123,11 @@ function MainLayout() {
           />
 
           <h3>Onde você mais gasta</h3>
-          <RankingCategorias transacoes={transacoes} />
+          <RankingCategorias transacoes={transacoesDoMes} />
 
           <h3>Transações</h3>
           <ListaTransacoes
-            transacoes={transacoes}
+            transacoes={transacoesDoMes}
             onExcluir={excluirTransacao}
           />
         </main>

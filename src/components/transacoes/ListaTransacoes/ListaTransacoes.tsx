@@ -9,7 +9,7 @@ interface ListaTransacoesProps {
 
 function ListaTransacoes({ transacoes, onExcluir }: ListaTransacoesProps) {
   if (transacoes.length === 0) {
-    return <p>Nenhuma transação cadastrada ainda.</p>;
+    return <p>Nenhuma transação neste mês.</p>;
   }
 
   // Copia a lista antes de ordenar, para não mexer na lista original
