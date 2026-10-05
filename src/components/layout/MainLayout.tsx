@@ -101,35 +101,59 @@ function MainLayout() {
     <>
       <Header nome="Tiago" />
       <div className="layout">
-        <Sidebar></Sidebar>
-        <main>
-          <h2>Dashboard</h2>
-          <SeletorMes mes={mesSelecionado} onMudar={setMesSelecionado} />
-
-          <div className="cards">
-            <CardFinanceiro titulo="Saldo do mês" valor={formatarMoeda(saldo)} />
-            <CardFinanceiro titulo="Receitas" valor={formatarMoeda(receitas)} />
-            <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
+        <Sidebar />
+        <main className="conteudo">
+          <div className="conteudo-topo">
+            <h2>Dashboard</h2>
+            <SeletorMes mes={mesSelecionado} onMudar={setMesSelecionado} />
           </div>
 
-          <TransacaoForm
-            categoriasDespesa={todasCategoriasDespesa}
-            onAdicionar={adicionarTransacao}
-          />
+          <div className="cards">
+            <CardFinanceiro
+              titulo="Saldo do mês"
+              valor={formatarMoeda(saldo)}
+              variante={saldo < 0 ? "despesa" : "saldo"}
+            />
+            <CardFinanceiro
+              titulo="Receitas"
+              valor={formatarMoeda(receitas)}
+              variante="receita"
+            />
+            <CardFinanceiro
+              titulo="Despesas"
+              valor={formatarMoeda(despesas)}
+              variante="despesa"
+            />
+          </div>
 
-          <NovaCategoriaForm
-            categoriasExistentes={todasCategoriasDespesa}
-            onCriar={criarCategoria}
-          />
+          <div className="grade-dashboard">
+            <div className="coluna">
+              <TransacaoForm
+                categoriasDespesa={todasCategoriasDespesa}
+                onAdicionar={adicionarTransacao}
+              />
 
-          <h3>Onde você mais gasta</h3>
-          <RankingCategorias transacoes={transacoesDoMes} />
+              <NovaCategoriaForm
+                categoriasExistentes={todasCategoriasDespesa}
+                onCriar={criarCategoria}
+              />
+            </div>
 
-          <h3>Transações</h3>
-          <ListaTransacoes
-            transacoes={transacoesDoMes}
-            onExcluir={excluirTransacao}
-          />
+            <div className="coluna">
+              <section className="painel">
+                <h3>Onde você mais gasta</h3>
+                <RankingCategorias transacoes={transacoesDoMes} />
+              </section>
+            </div>
+          </div>
+
+          <section className="painel">
+            <h3>Transações do mês</h3>
+            <ListaTransacoes
+              transacoes={transacoesDoMes}
+              onExcluir={excluirTransacao}
+            />
+          </section>
         </main>
       </div>
     </>

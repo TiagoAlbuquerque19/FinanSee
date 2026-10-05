@@ -1,4 +1,5 @@
 import { formatarMes, mesAtual, mudarMes } from "../../../utils/datas";
+import "./SeletorMes.css";
 
 interface SeletorMesProps {
   mes: string;
@@ -7,13 +8,30 @@ interface SeletorMesProps {
 
 function SeletorMes({ mes, onMudar }: SeletorMesProps) {
   return (
-    <div>
-      <button onClick={() => onMudar(mudarMes(mes, -1))}>◀ Anterior</button>
-      <strong> {formatarMes(mes)} </strong>
-      <button onClick={() => onMudar(mudarMes(mes, 1))}>Próximo ▶</button>
+    <div className="seletor-mes">
       {mes !== mesAtual() && (
-        <button onClick={() => onMudar(mesAtual())}>Voltar para hoje</button>
+        <button
+          className="botao-secundario"
+          onClick={() => onMudar(mesAtual())}
+        >
+          Hoje
+        </button>
       )}
+      <button
+        className="botao-secundario seletor-mes-seta"
+        onClick={() => onMudar(mudarMes(mes, -1))}
+        aria-label="Mês anterior"
+      >
+        ‹
+      </button>
+      <strong className="seletor-mes-nome">{formatarMes(mes)}</strong>
+      <button
+        className="botao-secundario seletor-mes-seta"
+        onClick={() => onMudar(mudarMes(mes, 1))}
+        aria-label="Próximo mês"
+      >
+        ›
+      </button>
     </div>
   );
 }

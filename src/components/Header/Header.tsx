@@ -1,4 +1,5 @@
 import "./Header.css";
+
 interface HeaderProps {
   nome: string;
 }
@@ -6,13 +7,18 @@ interface HeaderProps {
 function Header({ nome }: HeaderProps) {
   return (
     <header className="header">
-      <div>
-        <h1>FinanSee</h1>
-        <span>Finanças Pessoais</span>
+      <div className="header-marca">
+        <span className="header-logo">F</span>
+        <div>
+          <h1>FinanSee</h1>
+          <span className="header-subtitulo">Finanças pessoais</span>
+        </div>
       </div>
-      <div>
-        <span>Olá, {nome} </span>
-        <button>Perfil</button>
+
+      <div className="header-usuario">
+        <span>Olá, {nome}</span>
+        {/* A primeira letra do nome vira o "avatar" */}
+        <span className="header-avatar">{nome[0]}</span>
       </div>
     </header>
   );

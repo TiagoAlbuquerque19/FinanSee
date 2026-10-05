@@ -1,9 +1,13 @@
 import "./Sidebar.css";
+
 function Sidebar() {
   return (
     <aside className="sidebar">
       <nav>
-        <a href="#">Dashboard</a>
+        {/* "ativo" marca a página atual. Quando houver rotas, isso vai mudar sozinho */}
+        <a href="#" className="ativo">
+          Dashboard
+        </a>
         <a href="#">Transações</a>
         <a href="#">Metas</a>
         <a href="#">Lembretes</a>

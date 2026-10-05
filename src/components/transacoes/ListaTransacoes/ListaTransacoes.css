@@ -1,0 +1,65 @@
+.lista-transacoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cada transação é uma linha: informações | valor | botão */
+.transacao {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.transacao:last-child {
+  border-bottom: none;
+}
+
+.transacao-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.transacao-info strong {
+  font-weight: 500;
+  /* Descrição muito longa termina com "..." em vez de quebrar o layout */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transacao-info span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.transacao-valor {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.transacao-valor--receita {
+  color: var(--cor-receita);
+}
+
+.transacao-valor--despesa {
+  color: var(--cor-despesa);
+}
+
+.transacao-excluir {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--cor-texto-suave);
+}
+
+.transacao-excluir:hover {
+  background: var(--cor-despesa-suave);
+  color: var(--cor-despesa);
+}

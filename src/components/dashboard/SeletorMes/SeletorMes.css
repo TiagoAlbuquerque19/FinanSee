@@ -1,0 +1,34 @@
+.seletor-mes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seletor-mes-seta {
+  width: 40px;
+  padding: 8px 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.seletor-mes-nome {
+  /* Largura fixa para os botões não "pularem" quando o nome do mês muda */
+  min-width: 150px;
+  text-align: center;
+}
+
+/* Deixa só a primeira letra maiúscula: "Outubro de 2026" */
+.seletor-mes-nome::first-letter {
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .seletor-mes {
+    width: 100%;
+  }
+
+  .seletor-mes-nome {
+    min-width: 0;
+    flex: 1;
+  }
+}

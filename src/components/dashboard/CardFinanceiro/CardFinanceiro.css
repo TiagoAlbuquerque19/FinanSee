@@ -1,19 +1,37 @@
 .card-financeiro {
-  padding: 24px;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-
-  background-color: white;
-
-  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  /* Faixa colorida do lado esquerdo; a cor muda conforme a variante */
+  border-left: 4px solid var(--cor-do-card);
 }
 
-.card-financeiro h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
+.card-financeiro-titulo {
+  font-size: 14px;
   font-weight: 500;
+  color: var(--cor-texto-suave);
 }
 
-.card-financeiro strong {
-  font-size: 28px;
+.card-financeiro-valor {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cor-do-card);
+}
+
+/* Cada variante só define qual é a "cor do card" */
+.card-financeiro--saldo {
+  --cor-do-card: var(--cor-primaria);
+}
+
+.card-financeiro--receita {
+  --cor-do-card: var(--cor-receita);
+}
+
+.card-financeiro--despesa {
+  --cor-do-card: var(--cor-despesa);
 }
