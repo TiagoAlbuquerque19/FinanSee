@@ -1,0 +1,71 @@
+.cartao-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cartao-meta-topo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cartao-meta-icone {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+}
+
+.cartao-meta-icone--concluida {
+  background: var(--cor-receita-suave);
+  color: var(--cor-receita);
+}
+
+.cartao-meta-titulo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartao-meta-titulo h3 {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cartao-meta-titulo span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.cartao-meta-valores {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.cartao-meta-valores strong {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.cartao-meta-valores span {
+  color: var(--cor-texto-suave);
+}
+
+.cartao-meta-dica {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.cartao-meta-dica strong {
+  color: var(--cor-texto);
+}

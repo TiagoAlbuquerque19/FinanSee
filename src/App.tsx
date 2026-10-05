@@ -4,6 +4,7 @@ import FinancasProvider from "./context/FinancasProvider";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import TransacoesPage from "./pages/Transacoes/TransacoesPage";
 import CategoriasPage from "./pages/Categorias/CategoriasPage";
+import MetasPage from "./pages/Metas/MetasPage";
 import EmBrevePage from "./pages/EmBreve/EmBrevePage";
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="transacoes" element={<TransacoesPage />} />
-            <Route path="metas" element={<EmBrevePage titulo="Metas" />} />
+            <Route path="metas" element={<MetasPage />} />
             <Route
               path="lembretes"
               element={<EmBrevePage titulo="Lembretes" />}
