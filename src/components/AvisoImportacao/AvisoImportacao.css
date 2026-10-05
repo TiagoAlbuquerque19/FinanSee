@@ -1,0 +1,35 @@
+.aviso-importacao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--raio);
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+}
+
+.aviso-importacao p {
+  flex: 1;
+  color: var(--cor-texto);
+}
+
+.aviso-importacao-botoes {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.aviso-importacao button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@media (max-width: 768px) {
+  .aviso-importacao {
+    flex-wrap: wrap;
+  }
+
+  .aviso-importacao p {
+    flex-basis: calc(100% - 40px);
+  }
+}

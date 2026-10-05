@@ -192,3 +192,55 @@ export async function apagarLembrete(id: string) {
   const { error } = await supabase.from("lembretes").delete().eq("id", id);
   verificar(error);
 }
+
+// ---------- Importar dados antigos (do localStorage) ----------
+
+export interface DadosLocais {
+  transacoes: Transacao[];
+  categorias: string[];
+  metas: Meta[];
+  lembretes: Lembrete[];
+}
+
+// Envia tudo de uma vez. "upsert" com ignoreDuplicates: se o item já
+// existir no banco (mesmo id), ele é pulado em vez de dar erro.
+// Assim, importar duas vezes não duplica nada.
+export async function importarDados(dados: DadosLocais) {
+  if (dados.transacoes.length > 0) {
+    const { error } = await supabase
+      .from("transacoes")
+      .upsert(dados.transacoes.map(paraLinhaTransacao), {
+        onConflict: "id",
+        ignoreDuplicates: true,
+      });
+    verificar(error);
+  }
+
+  if (dados.categorias.length > 0) {
+    const { error } = await supabase.from("categorias").upsert(
+      dados.categorias.map((nome) => ({ nome })),
+      { onConflict: "user_id,nome", ignoreDuplicates: true },
+    );
+    verificar(error);
+  }
+
+  if (dados.metas.length > 0) {
+    const { error } = await supabase
+      .from("metas")
+      .upsert(dados.metas.map(paraLinhaMeta), {
+        onConflict: "id",
+        ignoreDuplicates: true,
+      });
+    verificar(error);
+  }
+
+  if (dados.lembretes.length > 0) {
+    const { error } = await supabase
+      .from("lembretes")
+      .upsert(dados.lembretes.map(paraLinhaLembrete), {
+        onConflict: "id",
+        ignoreDuplicates: true,
+      });
+    verificar(error);
+  }
+}

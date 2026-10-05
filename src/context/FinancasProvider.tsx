@@ -7,6 +7,11 @@ import type { Lembrete } from "../types/lembrete";
 import { categoriasDespesa } from "../data/categorias";
 import { mesAtual } from "../utils/datas";
 import * as banco from "../services/banco";
+import {
+  apagarDadosLocais,
+  contarDadosLocais,
+  lerDadosLocais,
+} from "../utils/dadosLocais";
 import TelaCarregando from "../components/auth/TelaCarregando/TelaCarregando";
 
 // Mostra um aviso quando o banco recusa ou a internet cai
@@ -35,19 +40,43 @@ function FinancasProvider({ children }: FinancasProviderProps) {
   const [carregando, setCarregando] = useState(true);
   const [erroAoCarregar, setErroAoCarregar] = useState<string | null>(null);
 
+  // Dados da época em que tudo ficava só no navegador (antes do login)
+  const [quantidadeDadosLocais, setQuantidadeDadosLocais] = useState(() =>
+    contarDadosLocais(lerDadosLocais()),
+  );
+
+  function recarregarDoBanco() {
+    return banco.buscarDados().then((dados) => {
+      setTransacoes(dados.transacoes);
+      setCategoriasPersonalizadas(dados.categorias);
+      setMetas(dados.metas);
+      setLembretes(dados.lembretes);
+    });
+  }
+
   // Ao abrir, busca todos os dados do usuário no banco (uma vez só: [])
   useEffect(() => {
-    banco
-      .buscarDados()
-      .then((dados) => {
-        setTransacoes(dados.transacoes);
-        setCategoriasPersonalizadas(dados.categorias);
-        setMetas(dados.metas);
-        setLembretes(dados.lembretes);
-      })
+    recarregarDoBanco()
       .catch((erro: Error) => setErroAoCarregar(erro.message))
       .finally(() => setCarregando(false));
   }, []);
+
+  async function importarDadosLocais() {
+    try {
+      await banco.importarDados(lerDadosLocais());
+      await recarregarDoBanco();
+      // Depois de importar, apaga do navegador para não oferecer de novo
+      apagarDadosLocais();
+      setQuantidadeDadosLocais(0);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  function descartarDadosLocais() {
+    apagarDadosLocais();
+    setQuantidadeDadosLocais(0);
+  }
 
   // Só as transações do mês escolhido. "2026-10-05".slice(0, 7) é "2026-10"
   const transacoesDoMes = transacoes.filter(
@@ -225,6 +254,9 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         criarLembrete,
         excluirLembrete,
         alternarPagamento,
+        quantidadeDadosLocais,
+        importarDadosLocais,
+        descartarDadosLocais,
       }}
     >
       {children}

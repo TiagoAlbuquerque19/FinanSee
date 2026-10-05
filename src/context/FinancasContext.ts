@@ -27,6 +27,10 @@ export interface FinancasContextValor {
   excluirLembrete: (id: string) => Promise<void>;
   // Marca (ou desmarca) o pagamento de um lembrete num mês "AAAA-MM"
   alternarPagamento: (id: string, mes: string) => Promise<void>;
+  // Quantos itens antigos (salvos só neste navegador) ainda dá para importar
+  quantidadeDadosLocais: number;
+  importarDadosLocais: () => Promise<void>;
+  descartarDadosLocais: () => void;
 }
 
 // Começa como null: só passa a ter valor dentro do FinancasProvider
