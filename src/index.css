@@ -233,3 +233,23 @@ select:focus {
   background: var(--cor-despesa-suave);
   color: var(--cor-despesa);
 }
+
+/* ===== Barra de progresso (metas) ===== */
+
+.barra-progresso {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--cor-primaria-suave);
+  overflow: hidden;
+}
+
+.barra-progresso-preenchimento {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--cor-primaria);
+  transition: width 0.3s;
+}
+
+.barra-progresso-preenchimento--concluida {
+  background: var(--cor-receita);
+}

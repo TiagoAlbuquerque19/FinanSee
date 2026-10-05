@@ -1,0 +1,14 @@
+.metas-total {
+  color: var(--cor-texto-suave);
+}
+
+.metas-total strong {
+  color: var(--cor-texto);
+}
+
+/* auto-fill: cabem quantos cartões couberem, cada um com pelo menos 280px */
+.grade-metas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}

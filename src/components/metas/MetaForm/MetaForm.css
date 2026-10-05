@@ -1,0 +1,29 @@
+/* Nome largo, depois valor, prazo e botão na mesma linha */
+.meta-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.meta-form h3 {
+  grid-column: 1 / -1;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 960px) {
+  .meta-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .meta-form-nome,
+  .meta-form button {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .meta-form {
+    grid-template-columns: 1fr;
+  }
+}

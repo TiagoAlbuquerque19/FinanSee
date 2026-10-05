@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { FinancasContext } from "./FinancasContext";
 import type { Transacao } from "../types/transacao";
+import type { Meta } from "../types/meta";
 import { categoriasDespesa } from "../data/categorias";
 import { mesAtual } from "../utils/datas";
 
@@ -34,6 +35,16 @@ function carregarCategoriasPersonalizadas(): string[] {
   return JSON.parse(dadosSalvos);
 }
 
+function carregarMetas(): Meta[] {
+  const dadosSalvos = localStorage.getItem("metas");
+
+  if (dadosSalvos === null) {
+    return [];
+  }
+
+  return JSON.parse(dadosSalvos);
+}
+
 interface FinancasProviderProps {
   children: ReactNode;
 }
@@ -45,6 +56,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     string[]
   >(carregarCategoriasPersonalizadas);
   const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
+  const [metas, setMetas] = useState<Meta[]>(carregarMetas);
 
   // Só as transações do mês escolhido. "2026-10-05".slice(0, 7) é "2026-10"
   const transacoesDoMes = transacoes.filter(
@@ -68,6 +80,10 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     );
   }, [categoriasPersonalizadas]);
 
+  useEffect(() => {
+    localStorage.setItem("metas", JSON.stringify(metas));
+  }, [metas]);
+
   function adicionarTransacao(novaTransacao: Transacao) {
     setTransacoes([novaTransacao, ...transacoes]);
   }
@@ -88,6 +104,32 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     setCategoriasPersonalizadas(novaLista);
   }
 
+  function criarMeta(novaMeta: Meta) {
+    setMetas([...metas, novaMeta]);
+  }
+
+  function excluirMeta(id: string) {
+    setMetas(metas.filter((meta) => meta.id !== id));
+  }
+
+  function movimentarMeta(id: string, valor: number) {
+    // O map cria uma lista nova: a meta com esse id ganha o valor novo,
+    // e as outras continuam iguais
+    const novaLista = metas.map((meta) => {
+      if (meta.id !== id) {
+        return meta;
+      }
+
+      // Math.max impede que o valor guardado fique negativo
+      const novoValor = Math.max(0, meta.valorGuardado + valor);
+
+      // { ...meta } copia a meta inteira; depois trocamos só o valorGuardado
+      return { ...meta, valorGuardado: novoValor };
+    });
+
+    setMetas(novaLista);
+  }
+
   return (
     <FinancasContext.Provider
       value={{
@@ -101,6 +143,10 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         excluirTransacao,
         criarCategoria,
         excluirCategoria,
+        metas,
+        criarMeta,
+        excluirMeta,
+        movimentarMeta,
       }}
     >
       {children}
