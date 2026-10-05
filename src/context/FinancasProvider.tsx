@@ -6,69 +6,48 @@ import type { Meta } from "../types/meta";
 import type { Lembrete } from "../types/lembrete";
 import { categoriasDespesa } from "../data/categorias";
 import { mesAtual } from "../utils/datas";
+import * as banco from "../services/banco";
+import TelaCarregando from "../components/auth/TelaCarregando/TelaCarregando";
 
-function carregarTransacoes(): Transacao[] {
-  const dadosSalvos = localStorage.getItem("transacoes");
+// Mostra um aviso quando o banco recusa ou a internet cai
+function avisarErro(erro: unknown) {
+  const detalhe = erro instanceof Error ? erro.message : String(erro);
 
-  if (dadosSalvos === null) {
-    return [];
-  }
-
-  const lista: Transacao[] = JSON.parse(dadosSalvos);
-
-  // Transações salvas antes de existir categoria ganham "Outros"
-  for (const transacao of lista) {
-    if (!transacao.categoria) {
-      transacao.categoria = "Outros";
-    }
-  }
-
-  return lista;
-}
-
-function carregarCategoriasPersonalizadas(): string[] {
-  const dadosSalvos = localStorage.getItem("categoriasPersonalizadas");
-
-  if (dadosSalvos === null) {
-    return [];
-  }
-
-  return JSON.parse(dadosSalvos);
-}
-
-function carregarMetas(): Meta[] {
-  const dadosSalvos = localStorage.getItem("metas");
-
-  if (dadosSalvos === null) {
-    return [];
-  }
-
-  return JSON.parse(dadosSalvos);
-}
-
-function carregarLembretes(): Lembrete[] {
-  const dadosSalvos = localStorage.getItem("lembretes");
-
-  if (dadosSalvos === null) {
-    return [];
-  }
-
-  return JSON.parse(dadosSalvos);
+  alert(
+    `Não foi possível salvar. Verifique sua internet e tente de novo.\n\n(${detalhe})`,
+  );
 }
 
 interface FinancasProviderProps {
   children: ReactNode;
 }
 
-// Guarda os dados num lugar só e entrega para qualquer componente que pedir
+// Guarda os dados do usuário logado e conversa com o banco (Supabase)
 function FinancasProvider({ children }: FinancasProviderProps) {
-  const [transacoes, setTransacoes] = useState<Transacao[]>(carregarTransacoes);
+  const [transacoes, setTransacoes] = useState<Transacao[]>([]);
   const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
     string[]
-  >(carregarCategoriasPersonalizadas);
+  >([]);
+  const [metas, setMetas] = useState<Meta[]>([]);
+  const [lembretes, setLembretes] = useState<Lembrete[]>([]);
   const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
-  const [metas, setMetas] = useState<Meta[]>(carregarMetas);
-  const [lembretes, setLembretes] = useState<Lembrete[]>(carregarLembretes);
+
+  const [carregando, setCarregando] = useState(true);
+  const [erroAoCarregar, setErroAoCarregar] = useState<string | null>(null);
+
+  // Ao abrir, busca todos os dados do usuário no banco (uma vez só: [])
+  useEffect(() => {
+    banco
+      .buscarDados()
+      .then((dados) => {
+        setTransacoes(dados.transacoes);
+        setCategoriasPersonalizadas(dados.categorias);
+        setMetas(dados.metas);
+        setLembretes(dados.lembretes);
+      })
+      .catch((erro: Error) => setErroAoCarregar(erro.message))
+      .finally(() => setCarregando(false));
+  }, []);
 
   // Só as transações do mês escolhido. "2026-10-05".slice(0, 7) é "2026-10"
   const transacoesDoMes = transacoes.filter(
@@ -81,94 +60,148 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     ...categoriasPersonalizadas,
   ];
 
-  useEffect(() => {
-    localStorage.setItem("transacoes", JSON.stringify(transacoes));
-  }, [transacoes]);
+  // Todas as ações seguem o mesmo roteiro:
+  // 1. salva no banco (await espera a resposta)
+  // 2. se deu certo, atualiza a tela
+  // 3. se deu errado, avisa e a tela continua como estava
+  //
+  // Usamos set...((listaAtual) => ...) porque, durante o await, a lista
+  // pode ter mudado; assim sempre partimos da versão mais nova.
 
-  useEffect(() => {
-    localStorage.setItem(
-      "categoriasPersonalizadas",
-      JSON.stringify(categoriasPersonalizadas),
+  async function adicionarTransacao(novaTransacao: Transacao) {
+    try {
+      await banco.inserirTransacao(novaTransacao);
+      setTransacoes((lista) => [novaTransacao, ...lista]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirTransacao(id: string) {
+    try {
+      await banco.apagarTransacao(id);
+      setTransacoes((lista) =>
+        lista.filter((transacao) => transacao.id !== id),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function criarCategoria(nome: string) {
+    try {
+      await banco.inserirCategoria(nome);
+      setCategoriasPersonalizadas((lista) => [...lista, nome]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirCategoria(nome: string) {
+    try {
+      await banco.apagarCategoria(nome);
+      setCategoriasPersonalizadas((lista) =>
+        lista.filter((categoria) => categoria !== nome),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function criarMeta(novaMeta: Meta) {
+    try {
+      await banco.inserirMeta(novaMeta);
+      setMetas((lista) => [...lista, novaMeta]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirMeta(id: string) {
+    try {
+      await banco.apagarMeta(id);
+      setMetas((lista) => lista.filter((meta) => meta.id !== id));
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function movimentarMeta(id: string, valor: number) {
+    const meta = metas.find((item) => item.id === id);
+
+    if (!meta) {
+      return;
+    }
+
+    // Math.max impede que o valor guardado fique negativo
+    const novoValor = Math.max(0, meta.valorGuardado + valor);
+
+    try {
+      await banco.atualizarValorGuardado(id, novoValor);
+      // { ...item } copia a meta inteira; depois trocamos só o valorGuardado
+      setMetas((lista) =>
+        lista.map((item) =>
+          item.id === id ? { ...item, valorGuardado: novoValor } : item,
+        ),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function criarLembrete(novoLembrete: Lembrete) {
+    try {
+      await banco.inserirLembrete(novoLembrete);
+      setLembretes((lista) => [...lista, novoLembrete]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirLembrete(id: string) {
+    try {
+      await banco.apagarLembrete(id);
+      setLembretes((lista) => lista.filter((lembrete) => lembrete.id !== id));
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function alternarPagamento(id: string, mes: string) {
+    const lembrete = lembretes.find((item) => item.id === id);
+
+    if (!lembrete) {
+      return;
+    }
+
+    // Se o mês já está pago, tira da lista; se não está, adiciona
+    const pagamentos = lembrete.pagamentos.includes(mes)
+      ? lembrete.pagamentos.filter((mesPago) => mesPago !== mes)
+      : [...lembrete.pagamentos, mes];
+
+    try {
+      await banco.atualizarPagamentos(id, pagamentos);
+      setLembretes((lista) =>
+        lista.map((item) => (item.id === id ? { ...item, pagamentos } : item)),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  if (carregando) {
+    return <TelaCarregando texto="Carregando seus dados..." />;
+  }
+
+  if (erroAoCarregar) {
+    return (
+      <div className="tela-carregando">
+        <span className="logo">F</span>
+        <p>Não foi possível carregar seus dados.</p>
+        <p className="texto-vazio">{erroAoCarregar}</p>
+        <button onClick={() => window.location.reload()}>Tentar de novo</button>
+      </div>
     );
-  }, [categoriasPersonalizadas]);
-
-  useEffect(() => {
-    localStorage.setItem("metas", JSON.stringify(metas));
-  }, [metas]);
-
-  useEffect(() => {
-    localStorage.setItem("lembretes", JSON.stringify(lembretes));
-  }, [lembretes]);
-
-  function adicionarTransacao(novaTransacao: Transacao) {
-    setTransacoes([novaTransacao, ...transacoes]);
-  }
-
-  function excluirTransacao(id: string) {
-    const novaLista = transacoes.filter((transacao) => transacao.id !== id);
-    setTransacoes(novaLista);
-  }
-
-  function criarCategoria(nome: string) {
-    setCategoriasPersonalizadas([...categoriasPersonalizadas, nome]);
-  }
-
-  function excluirCategoria(nome: string) {
-    const novaLista = categoriasPersonalizadas.filter(
-      (categoria) => categoria !== nome,
-    );
-    setCategoriasPersonalizadas(novaLista);
-  }
-
-  function criarMeta(novaMeta: Meta) {
-    setMetas([...metas, novaMeta]);
-  }
-
-  function excluirMeta(id: string) {
-    setMetas(metas.filter((meta) => meta.id !== id));
-  }
-
-  function movimentarMeta(id: string, valor: number) {
-    // O map cria uma lista nova: a meta com esse id ganha o valor novo,
-    // e as outras continuam iguais
-    const novaLista = metas.map((meta) => {
-      if (meta.id !== id) {
-        return meta;
-      }
-
-      // Math.max impede que o valor guardado fique negativo
-      const novoValor = Math.max(0, meta.valorGuardado + valor);
-
-      // { ...meta } copia a meta inteira; depois trocamos só o valorGuardado
-      return { ...meta, valorGuardado: novoValor };
-    });
-
-    setMetas(novaLista);
-  }
-
-  function criarLembrete(novoLembrete: Lembrete) {
-    setLembretes([...lembretes, novoLembrete]);
-  }
-
-  function excluirLembrete(id: string) {
-    setLembretes(lembretes.filter((lembrete) => lembrete.id !== id));
-  }
-
-  function alternarPagamento(id: string, mes: string) {
-    const novaLista = lembretes.map((lembrete) => {
-      if (lembrete.id !== id) {
-        return lembrete;
-      }
-
-      // Se o mês já está pago, tira da lista; se não está, adiciona
-      const pagamentos = lembrete.pagamentos.includes(mes)
-        ? lembrete.pagamentos.filter((mesPago) => mesPago !== mes)
-        : [...lembrete.pagamentos, mes];
-
-      return { ...lembrete, pagamentos };
-    });
-
-    setLembretes(novaLista);
   }
 
   return (
