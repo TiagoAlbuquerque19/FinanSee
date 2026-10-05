@@ -4,11 +4,13 @@ import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
 import RankingCategorias from "../../components/categorias/RankingCategorias/RankingCategorias";
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
-import { formatarMoeda } from "../../utils/formatarMoeda";
+import { calcularResumo } from "../../utils/calcularResumo";
+import { mudarMes, nomeDoMes } from "../../utils/datas";
 import { useFinancas } from "../../hooks/useFinancas";
 
 function DashboardPage() {
   const {
+    transacoes,
     transacoesDoMes,
     todasCategoriasDespesa,
     mesSelecionado,
@@ -17,18 +19,16 @@ function DashboardPage() {
     excluirTransacao,
   } = useFinancas();
 
-  let receitas = 0;
-  let despesas = 0;
+  const atual = calcularResumo(transacoesDoMes);
 
-  for (const transacao of transacoesDoMes) {
-    if (transacao.tipo === "receita") {
-      receitas = receitas + transacao.valor;
-    } else {
-      despesas = despesas + transacao.valor;
-    }
-  }
-
-  const saldo = receitas - despesas;
+  // Mesmo cálculo para o mês anterior, para comparar nos cards
+  const mesAnterior = mudarMes(mesSelecionado, -1);
+  const transacoesMesAnterior = transacoes.filter(
+    (transacao) => transacao.data.slice(0, 7) === mesAnterior,
+  );
+  const anterior = calcularResumo(transacoesMesAnterior);
+  const temMesAnterior = transacoesMesAnterior.length > 0;
+  const nomeMesAnterior = nomeDoMes(mesAnterior);
 
   return (
     <>
@@ -40,18 +40,24 @@ function DashboardPage() {
       <div className="cards">
         <CardFinanceiro
           titulo="Saldo do mês"
-          valor={formatarMoeda(saldo)}
-          variante={saldo < 0 ? "despesa" : "saldo"}
+          valor={atual.saldo}
+          variante="saldo"
+          valorAnterior={temMesAnterior ? anterior.saldo : null}
+          nomeMesAnterior={nomeMesAnterior}
         />
         <CardFinanceiro
           titulo="Receitas"
-          valor={formatarMoeda(receitas)}
+          valor={atual.receitas}
           variante="receita"
+          valorAnterior={temMesAnterior ? anterior.receitas : null}
+          nomeMesAnterior={nomeMesAnterior}
         />
         <CardFinanceiro
           titulo="Despesas"
-          valor={formatarMoeda(despesas)}
+          valor={atual.despesas}
           variante="despesa"
+          valorAnterior={temMesAnterior ? anterior.despesas : null}
+          nomeMesAnterior={nomeMesAnterior}
         />
       </div>
 

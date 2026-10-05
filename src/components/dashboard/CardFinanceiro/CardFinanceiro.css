@@ -1,14 +1,18 @@
 .card-financeiro {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   padding: 20px;
   background: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
-  /* Faixa colorida do lado esquerdo; a cor muda conforme a variante */
-  border-left: 4px solid var(--cor-do-card);
+}
+
+.card-financeiro-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-financeiro-titulo {
@@ -17,21 +21,54 @@
   color: var(--cor-texto-suave);
 }
 
+/* Círculo colorido com o ícone: é ele que mostra a "cor" do card */
+.card-financeiro-icone {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.card-financeiro-icone--saldo {
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+}
+
+.card-financeiro-icone--receita {
+  background: var(--cor-receita-suave);
+  color: var(--cor-receita);
+}
+
+.card-financeiro-icone--despesa {
+  background: var(--cor-despesa-suave);
+  color: var(--cor-despesa);
+}
+
+/* O valor fica na cor do texto: fácil de ler nos dois temas */
 .card-financeiro-valor {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--cor-do-card);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-/* Cada variante só define qual é a "cor do card" */
-.card-financeiro--saldo {
-  --cor-do-card: var(--cor-primaria);
+.card-financeiro-comparacao {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
 }
 
-.card-financeiro--receita {
-  --cor-do-card: var(--cor-receita);
+.comparacao-boa,
+.comparacao-ruim {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: 600;
 }
 
-.card-financeiro--despesa {
-  --cor-do-card: var(--cor-despesa);
+.comparacao-boa {
+  color: var(--cor-receita);
+}
+
+.comparacao-ruim {
+  color: var(--cor-despesa);
 }

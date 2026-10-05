@@ -43,3 +43,11 @@ export function formatarMes(mes: string): string {
 
   return data.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
 }
+
+// "2026-10" vira "outubro"
+export function nomeDoMes(mes: string): string {
+  const [ano, numeroMes] = mes.split("-").map(Number);
+  const data = new Date(ano, numeroMes - 1, 1);
+
+  return data.toLocaleDateString("pt-BR", { month: "long" });
+}
