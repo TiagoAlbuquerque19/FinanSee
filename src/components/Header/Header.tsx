@@ -1,4 +1,5 @@
 import BotaoTema from "../BotaoTema/BotaoTema";
+import AvisoLembretes from "../lembretes/AvisoLembretes/AvisoLembretes";
 import "./Header.css";
 
 interface HeaderProps {
@@ -40,6 +41,7 @@ function Header({ nome }: HeaderProps) {
       </div>
 
       <div className="header-acoes">
+        <AvisoLembretes />
         <BotaoTema />
         {/* A primeira letra do nome vira o "avatar" */}
         <span className="header-avatar">{nome[0]}</span>

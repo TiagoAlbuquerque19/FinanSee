@@ -1,5 +1,5 @@
 // Coloca um zero na frente quando o número tem só um dígito: 5 vira "05"
-function doisDigitos(numero: number): string {
+export function doisDigitos(numero: number): string {
   return String(numero).padStart(2, "0");
 }
 

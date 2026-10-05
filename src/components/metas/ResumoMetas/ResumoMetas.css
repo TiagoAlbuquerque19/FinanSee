@@ -27,3 +27,11 @@
   font-size: 14px;
   white-space: nowrap;
 }
+
+/* Em telas estreitas, o valor desce para baixo do nome da meta */
+@media (max-width: 520px) {
+  .resumo-metas-linha {
+    flex-direction: column;
+    gap: 0;
+  }
+}

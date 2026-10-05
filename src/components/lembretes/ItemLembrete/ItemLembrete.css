@@ -1,0 +1,74 @@
+.item-lembrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.item-lembrete:last-child {
+  border-bottom: none;
+}
+
+.item-lembrete-icone {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+.item-lembrete-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-lembrete-info strong {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-lembrete-info > span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.item-lembrete-situacao {
+  font-weight: 600;
+  background: none !important;
+}
+
+.item-lembrete-valor {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.item-lembrete button:not(.botao-excluir) {
+  flex-shrink: 0;
+  padding: 8px 14px;
+}
+
+/* No celular, o valor desce para baixo do nome para sobrar espaço */
+@media (max-width: 520px) {
+  .item-lembrete {
+    flex-wrap: wrap;
+  }
+
+  .item-lembrete-info {
+    flex-basis: calc(100% - 52px);
+  }
+
+  .item-lembrete-valor {
+    margin-left: 52px;
+  }
+
+  /* margin-left: auto empurra os botões para a direita */
+  .item-lembrete button:not(.botao-excluir) {
+    margin-left: auto;
+  }
+}

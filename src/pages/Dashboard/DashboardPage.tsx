@@ -5,6 +5,7 @@ import GraficoCategorias from "../../components/graficos/GraficoCategorias/Grafi
 import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
 import GraficoMensal from "../../components/graficos/GraficoMensal/GraficoMensal";
+import ProximosVencimentos from "../../components/lembretes/ProximosVencimentos/ProximosVencimentos";
 import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
 import { calcularResumo } from "../../utils/calcularResumo";
 import { resumoPorMes } from "../../utils/resumoPorMes";
@@ -21,6 +22,7 @@ function DashboardPage() {
     adicionarTransacao,
     excluirTransacao,
     metas,
+    lembretes,
   } = useFinancas();
 
   const atual = calcularResumo(transacoesDoMes);
@@ -71,6 +73,16 @@ function DashboardPage() {
             categoriasDespesa={todasCategoriasDespesa}
             onAdicionar={adicionarTransacao}
           />
+
+          <section className="painel">
+            <div className="painel-topo">
+              <h3>Próximos vencimentos</h3>
+              <Link to="/lembretes" className="link">
+                Ver todos →
+              </Link>
+            </div>
+            <ProximosVencimentos lembretes={lembretes} />
+          </section>
         </div>
 
         <div className="coluna">

@@ -1,0 +1,34 @@
+.proximos-vencimentos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.proximos-vencimentos li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* A "etiqueta" com a data, colorida conforme a situação */
+.proximos-vencimentos-data {
+  min-width: 72px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.proximos-vencimentos-titulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.proximos-vencimentos-valor {
+  font-weight: 600;
+  white-space: nowrap;
+}

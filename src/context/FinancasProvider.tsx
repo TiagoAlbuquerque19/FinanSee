@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { FinancasContext } from "./FinancasContext";
 import type { Transacao } from "../types/transacao";
 import type { Meta } from "../types/meta";
+import type { Lembrete } from "../types/lembrete";
 import { categoriasDespesa } from "../data/categorias";
 import { mesAtual } from "../utils/datas";
 
@@ -45,6 +46,16 @@ function carregarMetas(): Meta[] {
   return JSON.parse(dadosSalvos);
 }
 
+function carregarLembretes(): Lembrete[] {
+  const dadosSalvos = localStorage.getItem("lembretes");
+
+  if (dadosSalvos === null) {
+    return [];
+  }
+
+  return JSON.parse(dadosSalvos);
+}
+
 interface FinancasProviderProps {
   children: ReactNode;
 }
@@ -57,6 +68,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
   >(carregarCategoriasPersonalizadas);
   const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
   const [metas, setMetas] = useState<Meta[]>(carregarMetas);
+  const [lembretes, setLembretes] = useState<Lembrete[]>(carregarLembretes);
 
   // Só as transações do mês escolhido. "2026-10-05".slice(0, 7) é "2026-10"
   const transacoesDoMes = transacoes.filter(
@@ -83,6 +95,10 @@ function FinancasProvider({ children }: FinancasProviderProps) {
   useEffect(() => {
     localStorage.setItem("metas", JSON.stringify(metas));
   }, [metas]);
+
+  useEffect(() => {
+    localStorage.setItem("lembretes", JSON.stringify(lembretes));
+  }, [lembretes]);
 
   function adicionarTransacao(novaTransacao: Transacao) {
     setTransacoes([novaTransacao, ...transacoes]);
@@ -130,6 +146,31 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     setMetas(novaLista);
   }
 
+  function criarLembrete(novoLembrete: Lembrete) {
+    setLembretes([...lembretes, novoLembrete]);
+  }
+
+  function excluirLembrete(id: string) {
+    setLembretes(lembretes.filter((lembrete) => lembrete.id !== id));
+  }
+
+  function alternarPagamento(id: string, mes: string) {
+    const novaLista = lembretes.map((lembrete) => {
+      if (lembrete.id !== id) {
+        return lembrete;
+      }
+
+      // Se o mês já está pago, tira da lista; se não está, adiciona
+      const pagamentos = lembrete.pagamentos.includes(mes)
+        ? lembrete.pagamentos.filter((mesPago) => mesPago !== mes)
+        : [...lembrete.pagamentos, mes];
+
+      return { ...lembrete, pagamentos };
+    });
+
+    setLembretes(novaLista);
+  }
+
   return (
     <FinancasContext.Provider
       value={{
@@ -147,6 +188,10 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         criarMeta,
         excluirMeta,
         movimentarMeta,
+        lembretes,
+        criarLembrete,
+        excluirLembrete,
+        alternarPagamento,
       }}
     >
       {children}
