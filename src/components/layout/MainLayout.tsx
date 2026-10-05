@@ -26,19 +26,46 @@ function carregarTransacoes(): Transacao[] {
   return lista;
 }
 
+function carregarCategoriasPersonalizadas(): string[] {
+  const dadosSalvos = localStorage.getItem("categoriasPersonalizadas");
+
+  if (dadosSalvos === null) {
+    return [];
+  }
+
+  return JSON.parse(dadosSalvos);
+}
+
 function MainLayout() {
   const [transacoes, setTransacoes] = useState<Transacao[]>(carregarTransacoes);
   const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [categoria, setCategoria] = useState(categoriasDespesa[0]);
+  const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
+    string[]
+  >(carregarCategoriasPersonalizadas);
+  const [novaCategoria, setNovaCategoria] = useState("");
+
+  // As categorias criadas pelo usuário entram junto com as de despesa
+  const todasCategoriasDespesa = [
+    ...categoriasDespesa,
+    ...categoriasPersonalizadas,
+  ];
 
   const categoriasDoTipo =
-    tipo === "despesa" ? categoriasDespesa : categoriasReceita;
+    tipo === "despesa" ? todasCategoriasDespesa : categoriasReceita;
 
   useEffect(() => {
     localStorage.setItem("transacoes", JSON.stringify(transacoes));
   }, [transacoes]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "categoriasPersonalizadas",
+      JSON.stringify(categoriasPersonalizadas),
+    );
+  }, [categoriasPersonalizadas]);
 
   let receitas = 0;
   let despesas = 0;
@@ -84,6 +111,27 @@ function MainLayout() {
     } else {
       setCategoria(categoriasReceita[0]);
     }
+  }
+
+  function criarCategoria() {
+    const nome = novaCategoria.trim();
+
+    if (nome === "") {
+      alert("Digite o nome da categoria.");
+      return;
+    }
+
+    if (todasCategoriasDespesa.includes(nome)) {
+      alert("Essa categoria já existe.");
+      return;
+    }
+
+    setCategoriasPersonalizadas([...categoriasPersonalizadas, nome]);
+    setNovaCategoria("");
+
+    // Já deixa a categoria nova selecionada no formulário
+    setTipo("despesa");
+    setCategoria(nome);
   }
 
   function excluirTransacao(id: string) {
@@ -137,6 +185,16 @@ function MainLayout() {
             ))}
           </select>
           <button onClick={adicionarTransacao}>Adicionar transação</button>
+
+          <h3>Nova categoria de despesa</h3>
+          <input
+            type="text"
+            placeholder="Ex.: Pets, Academia..."
+            value={novaCategoria}
+            onChange={(evento) => setNovaCategoria(evento.target.value)}
+          />
+          <button onClick={criarCategoria}>Criar categoria</button>
+
           <h3>Transações</h3>
           {transacoes.length === 0 ? (
             <p>Nenhuma transação cadastrada ainda.</p>
