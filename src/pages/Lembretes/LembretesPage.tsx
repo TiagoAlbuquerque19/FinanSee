@@ -3,10 +3,17 @@ import ItemLembrete from "../../components/lembretes/ItemLembrete/ItemLembrete";
 import { useFinancas } from "../../hooks/useFinancas";
 import { ocorrenciasOrdenadas } from "../../utils/lembretes";
 import type { Ocorrencia } from "../../utils/lembretes";
+import { formatarMoeda } from "../../utils/formatarMoeda";
+import { hoje } from "../../utils/datas";
 
 function LembretesPage() {
-  const { lembretes, criarLembrete, excluirLembrete, alternarPagamento } =
-    useFinancas();
+  const {
+    lembretes,
+    criarLembrete,
+    excluirLembrete,
+    alternarPagamento,
+    adicionarTransacao,
+  } = useFinancas();
 
   const ocorrencias = ocorrenciasOrdenadas(lembretes);
 
@@ -21,7 +28,27 @@ function LembretesPage() {
   const pagos = ocorrencias.filter((item) => item.situacao === "pago");
 
   function alternar(ocorrencia: Ocorrencia) {
-    alternarPagamento(ocorrencia.lembrete.id, ocorrencia.mes);
+    const { lembrete, situacao } = ocorrencia;
+
+    alternarPagamento(lembrete.id, ocorrencia.mes);
+
+    // Ao marcar como pago, oferece já lançar a despesa (só se tiver valor)
+    if (situacao !== "pago" && lembrete.valor !== null) {
+      const registrar = window.confirm(
+        `Registrar ${formatarMoeda(lembrete.valor)} de "${lembrete.titulo}" como despesa em Contas?`,
+      );
+
+      if (registrar) {
+        adicionarTransacao({
+          id: crypto.randomUUID(),
+          descricao: lembrete.titulo,
+          valor: lembrete.valor,
+          tipo: "despesa",
+          categoria: "Contas",
+          data: hoje(),
+        });
+      }
+    }
   }
 
   // Um "pedaço de tela" reaproveitado para os 3 grupos
