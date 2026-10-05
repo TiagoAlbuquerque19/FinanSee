@@ -5,7 +5,7 @@ import { formatarMoeda } from "../../utils/formatarMoeda";
 import "./MetasPage.css";
 
 function MetasPage() {
-  const { metas, criarMeta, excluirMeta } = useFinancas();
+  const { metas, criarMeta, excluirMeta, movimentarMeta } = useFinancas();
 
   // Quanto já foi guardado somando todas as metas
   let totalGuardado = 0;
@@ -37,7 +37,12 @@ function MetasPage() {
       ) : (
         <div className="grade-metas">
           {metas.map((meta) => (
-            <CartaoMeta key={meta.id} meta={meta} onExcluir={excluirMeta} />
+            <CartaoMeta
+              key={meta.id}
+              meta={meta}
+              onExcluir={excluirMeta}
+              onMovimentar={movimentarMeta}
+            />
           ))}
         </div>
       )}

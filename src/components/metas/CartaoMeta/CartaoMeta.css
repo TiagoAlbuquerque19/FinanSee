@@ -69,3 +69,23 @@
 .cartao-meta-dica strong {
   color: var(--cor-texto);
 }
+
+/* Campo de valor em cima; botões Guardar e Retirar lado a lado embaixo */
+.cartao-meta-movimentar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.cartao-meta-movimentar input {
+  grid-column: 1 / -1;
+}
+
+.cartao-meta-movimentar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
