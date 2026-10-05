@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import {
   ArrowLeftRight,
   Bell,
+  ChartColumn,
   LayoutDashboard,
   Tags,
   Target,
@@ -14,6 +15,7 @@ const itensMenu = [
   { caminho: "/", nome: "Dashboard", Icone: LayoutDashboard },
   { caminho: "/transacoes", nome: "Transações", Icone: ArrowLeftRight },
   { caminho: "/metas", nome: "Metas", Icone: Target },
+  { caminho: "/relatorios", nome: "Relatórios", Icone: ChartColumn },
   { caminho: "/lembretes", nome: "Lembretes", Icone: Bell },
   { caminho: "/categorias", nome: "Categorias", Icone: Tags },
 ];

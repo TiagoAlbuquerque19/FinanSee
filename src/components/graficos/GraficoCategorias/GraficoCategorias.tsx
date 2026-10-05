@@ -59,8 +59,8 @@ function GraficoCategorias({ transacoes }: GraficoCategoriasProps) {
             data={fatias}
             dataKey="valor"
             nameKey="nome"
-            innerRadius={64}
-            outerRadius={92}
+            innerRadius={70}
+            outerRadius={96}
             // A borda da cor do fundo cria um respiro de 2px entre as fatias
             stroke="var(--cor-superficie)"
             strokeWidth={2}

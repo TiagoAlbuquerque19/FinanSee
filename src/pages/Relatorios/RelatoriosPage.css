@@ -1,0 +1,108 @@
+.filtro-periodo {
+  display: flex;
+  gap: 8px;
+}
+
+.filtro-periodo button {
+  padding: 8px 14px;
+}
+
+.resumo-periodo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.resumo-periodo .painel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resumo-periodo span {
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+.resumo-periodo strong {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.grade-relatorios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.grade-relatorios > * {
+  min-width: 0;
+}
+
+/* ===== Tabela ===== */
+
+/* Se a tabela não couber (celular), ela rola para o lado sozinha */
+.tabela-rolagem {
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabela th,
+.tabela td {
+  padding: 10px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--cor-borda);
+  white-space: nowrap;
+  /* Números com a mesma largura, para alinharem em coluna */
+  font-variant-numeric: tabular-nums;
+}
+
+.tabela th {
+  font-weight: 500;
+  color: var(--cor-texto-suave);
+}
+
+.tabela th:first-child,
+.tabela td:first-child {
+  text-align: left;
+}
+
+.tabela tr:last-child td {
+  border-bottom: none;
+}
+
+.tabela-mes::first-letter {
+  text-transform: uppercase;
+}
+
+.valor-negativo {
+  color: var(--cor-despesa);
+}
+
+@media (max-width: 960px) {
+  .grade-relatorios {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabela {
+    font-size: 13px;
+  }
+
+  .tabela th,
+  .tabela td {
+    padding: 8px 6px;
+  }
+
+  .resumo-periodo {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
