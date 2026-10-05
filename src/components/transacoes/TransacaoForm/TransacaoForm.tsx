@@ -54,7 +54,14 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
   }
 
   return (
-    <div className="painel transacao-form">
+    <form
+      className="painel transacao-form"
+      onSubmit={(evento) => {
+        // Sem isso, o navegador recarregaria a página ao enviar o formulário
+        evento.preventDefault();
+        adicionarTransacao();
+      }}
+    >
       <h3>Nova transação</h3>
 
       {/* O <label> em volta liga o texto ao campo: clicar no texto foca o campo */}
@@ -116,10 +123,10 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
         </select>
       </label>
 
-      <button className="campo-inteiro" onClick={adicionarTransacao}>
+      <button type="submit" className="campo-inteiro">
         Adicionar transação
       </button>
-    </div>
+    </form>
   );
 }
 

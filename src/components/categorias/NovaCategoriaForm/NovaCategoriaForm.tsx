@@ -33,7 +33,13 @@ function NovaCategoriaForm({
   return (
     <div className="painel">
       <h3>Nova categoria de despesa</h3>
-      <div className="nova-categoria-linha">
+      <form
+        className="nova-categoria-linha"
+        onSubmit={(evento) => {
+          evento.preventDefault();
+          criarCategoria();
+        }}
+      >
         <input
           type="text"
           placeholder="Ex.: Pets, Academia..."
@@ -41,10 +47,10 @@ function NovaCategoriaForm({
           value={novaCategoria}
           onChange={(evento) => setNovaCategoria(evento.target.value)}
         />
-        <button className="botao-secundario" onClick={criarCategoria}>
+        <button type="submit" className="botao-secundario">
           Criar
         </button>
-      </div>
+      </form>
     </div>
   );
 }
