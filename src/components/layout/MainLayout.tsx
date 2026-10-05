@@ -1,6 +1,7 @@
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
+import NovaCategoriaForm from "../categorias/NovaCategoriaForm/NovaCategoriaForm";
 import RankingCategorias from "../categorias/RankingCategorias/RankingCategorias";
 import ListaTransacoes from "../transacoes/ListaTransacoes/ListaTransacoes";
 import { useState, useEffect } from "react";
@@ -47,7 +48,6 @@ function MainLayout() {
   const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
     string[]
   >(carregarCategoriasPersonalizadas);
-  const [novaCategoria, setNovaCategoria] = useState("");
 
   // As categorias criadas pelo usuário entram junto com as de despesa
   const todasCategoriasDespesa = [
@@ -115,21 +115,8 @@ function MainLayout() {
     }
   }
 
-  function criarCategoria() {
-    const nome = novaCategoria.trim();
-
-    if (nome === "") {
-      alert("Digite o nome da categoria.");
-      return;
-    }
-
-    if (todasCategoriasDespesa.includes(nome)) {
-      alert("Essa categoria já existe.");
-      return;
-    }
-
+  function criarCategoria(nome: string) {
     setCategoriasPersonalizadas([...categoriasPersonalizadas, nome]);
-    setNovaCategoria("");
 
     // Já deixa a categoria nova selecionada no formulário
     setTipo("despesa");
@@ -188,14 +175,10 @@ function MainLayout() {
           </select>
           <button onClick={adicionarTransacao}>Adicionar transação</button>
 
-          <h3>Nova categoria de despesa</h3>
-          <input
-            type="text"
-            placeholder="Ex.: Pets, Academia..."
-            value={novaCategoria}
-            onChange={(evento) => setNovaCategoria(evento.target.value)}
+          <NovaCategoriaForm
+            categoriasExistentes={todasCategoriasDespesa}
+            onCriar={criarCategoria}
           />
-          <button onClick={criarCategoria}>Criar categoria</button>
 
           <h3>Onde você mais gasta</h3>
           <RankingCategorias transacoes={transacoes} />
