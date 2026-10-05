@@ -80,6 +80,31 @@ function MainLayout() {
 
   const saldo = receitas - despesas;
 
+  // Soma as despesas de cada categoria, para saber onde você mais gasta
+  const gastosPorCategoria: { categoria: string; total: number }[] = [];
+
+  for (const transacao of transacoes) {
+    if (transacao.tipo === "receita") {
+      continue;
+    }
+
+    const itemExistente = gastosPorCategoria.find(
+      (item) => item.categoria === transacao.categoria,
+    );
+
+    if (itemExistente) {
+      itemExistente.total = itemExistente.total + transacao.valor;
+    } else {
+      gastosPorCategoria.push({
+        categoria: transacao.categoria,
+        total: transacao.valor,
+      });
+    }
+  }
+
+  // Ordena do maior gasto para o menor
+  gastosPorCategoria.sort((a, b) => b.total - a.total);
+
   function adicionarTransacao() {
     const valorNumerico = Number(valor);
 
@@ -194,6 +219,20 @@ function MainLayout() {
             onChange={(evento) => setNovaCategoria(evento.target.value)}
           />
           <button onClick={criarCategoria}>Criar categoria</button>
+
+          <h3>Onde você mais gasta</h3>
+          {gastosPorCategoria.length === 0 ? (
+            <p>Nenhuma despesa cadastrada ainda.</p>
+          ) : (
+            <ol>
+              {gastosPorCategoria.map((item) => (
+                <li key={item.categoria}>
+                  {item.categoria}: {formatarMoeda(item.total)} (
+                  {Math.round((item.total / despesas) * 100)}%)
+                </li>
+              ))}
+            </ol>
+          )}
 
           <h3>Transações</h3>
           {transacoes.length === 0 ? (
