@@ -35,7 +35,7 @@ function RankingCategorias({ transacoes }: RankingCategoriasProps) {
   gastosPorCategoria.sort((a, b) => b.total - a.total);
 
   if (gastosPorCategoria.length === 0) {
-    return <p>Nenhuma despesa cadastrada ainda.</p>;
+    return <p>Nenhuma despesa neste mês.</p>;
   }
 
   return (
