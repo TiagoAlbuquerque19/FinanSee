@@ -4,19 +4,18 @@ import "./TooltipGrafico.css";
 
 // A caixinha que aparece ao passar o mouse (ou o dedo) num gráfico.
 // O Recharts entrega: se está ativo, o rótulo (ex.: o mês) e os valores.
-function TooltipGrafico({
-  active,
-  payload,
-  label,
-}: TooltipContentProps) {
+function TooltipGrafico({ active, payload, label }: TooltipContentProps) {
   if (!active || payload.length === 0) {
     return null;
   }
 
+  // Se o dado tiver um "titulo" (ex.: "outubro de 2026"), ele vira o título
+  const titulo = payload[0]?.payload?.titulo ?? label;
+
   return (
     <div className="tooltip-grafico">
-      {label !== undefined && (
-        <span className="tooltip-grafico-titulo">{label}</span>
+      {titulo !== undefined && (
+        <span className="tooltip-grafico-titulo">{titulo}</span>
       )}
       {payload.map((item) => (
         <div key={String(item.name)} className="tooltip-grafico-linha">

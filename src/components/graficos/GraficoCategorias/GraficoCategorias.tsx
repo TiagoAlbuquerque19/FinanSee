@@ -4,6 +4,7 @@ import { agruparDespesasPorCategoria } from "../../../utils/agruparPorCategoria"
 import { corDaCategoria } from "../../../data/coresGraficos";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import TooltipGrafico from "../TooltipGrafico/TooltipGrafico";
+import "../graficos.css";
 import "./GraficoCategorias.css";
 
 interface GraficoCategoriasProps {
