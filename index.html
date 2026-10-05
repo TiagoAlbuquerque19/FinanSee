@@ -15,6 +15,24 @@
       rel="stylesheet"
     />
     <title>FinanSee</title>
+    <script>
+      // Aplica o tema antes do React carregar, para a tela não "piscar"
+      // branca quando o tema salvo é o escuro
+      (function () {
+        var tema = null;
+        try {
+          tema = localStorage.getItem("tema");
+        } catch (erro) {}
+        if (tema !== "claro" && tema !== "escuro") {
+          // Nunca escolheu? Segue o tema do sistema (celular/computador)
+          var sistemaEscuro = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          tema = sistemaEscuro ? "escuro" : "claro";
+        }
+        document.documentElement.dataset.tema = tema;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

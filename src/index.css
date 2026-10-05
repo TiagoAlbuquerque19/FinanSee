@@ -6,11 +6,11 @@
    ========================================================== */
 
 :root {
-  --cor-fundo: #f5f6fa;
+  --cor-fundo: #f6f7f9;
   --cor-superficie: #ffffff;
-  --cor-borda: #e4e6ee;
-  --cor-texto: #1f2333;
-  --cor-texto-suave: #6b7085;
+  --cor-borda: #e6e8ec;
+  --cor-texto: #111827;
+  --cor-texto-suave: #6b7280;
 
   --cor-primaria: #4f46e5;
   --cor-primaria-hover: #4338ca;
@@ -18,41 +18,40 @@
   --cor-texto-botao: #ffffff;
 
   --cor-receita: #15803d;
-  --cor-receita-suave: #e8f7ee;
+  --cor-receita-suave: #e7f6ec;
   --cor-despesa: #dc2626;
   --cor-despesa-suave: #fdecec;
 
-  --sombra: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
-  --raio: 12px;
+  --sombra: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --raio: 14px;
   --fonte: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   color-scheme: light;
 }
 
-/* Modo escuro: o navegador avisa se o sistema do usuário está no tema escuro.
-   Só trocamos os valores das variáveis, e o site inteiro acompanha. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --cor-fundo: #0f1117;
-    --cor-superficie: #181b24;
-    --cor-borda: #2a2e3b;
-    --cor-texto: #e8eaf2;
-    --cor-texto-suave: #9aa0b4;
+/* Modo escuro: quando o <html> tem data-tema="escuro", trocamos só os
+   valores das variáveis, e o site inteiro acompanha.
+   Quem coloca esse atributo é o botão de tema (e o script no index.html). */
+:root[data-tema="escuro"] {
+  --cor-fundo: #0d0f14;
+  --cor-superficie: #161921;
+  --cor-borda: #262a35;
+  --cor-texto: #f1f2f6;
+  --cor-texto-suave: #9ca1b3;
 
-    --cor-primaria: #818cf8;
-    --cor-primaria-hover: #a5b4fc;
-    --cor-primaria-suave: #23264a;
-    --cor-texto-botao: #0f1117;
+  --cor-primaria: #8b93ff;
+  --cor-primaria-hover: #a8aeff;
+  --cor-primaria-suave: #23264a;
+  --cor-texto-botao: #0d0f14;
 
-    --cor-receita: #4ade80;
-    --cor-receita-suave: #15291e;
-    --cor-despesa: #f87171;
-    --cor-despesa-suave: #321a1c;
+  --cor-receita: #4ade80;
+  --cor-receita-suave: #13291c;
+  --cor-despesa: #f87171;
+  --cor-despesa-suave: #34191b;
 
-    --sombra: none;
+  --sombra: none;
 
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 /* ===== Base ===== */
@@ -72,6 +71,7 @@ body {
   color: var(--cor-texto);
   background: var(--cor-fundo);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s;
 }
 
 h1,
@@ -205,4 +205,14 @@ select:focus {
 
 .link:hover {
   text-decoration: underline;
+}
+
+/* Botão quadrado só com ícone (ex.: o botão de tema) */
+.botao-icone {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 10px;
 }

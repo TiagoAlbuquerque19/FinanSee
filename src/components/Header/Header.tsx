@@ -1,3 +1,4 @@
+import BotaoTema from "../BotaoTema/BotaoTema";
 import "./Header.css";
 
 interface HeaderProps {
@@ -39,6 +40,7 @@ function Header({ nome }: HeaderProps) {
       </div>
 
       <div className="header-acoes">
+        <BotaoTema />
         {/* A primeira letra do nome vira o "avatar" */}
         <span className="header-avatar">{nome[0]}</span>
       </div>
