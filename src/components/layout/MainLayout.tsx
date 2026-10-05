@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
@@ -14,7 +15,10 @@ function MainLayout() {
         <Header />
         <main className="conteudo">
           <AvisoImportacao />
-          <Outlet />
+          {/* Suspense mostra o "Carregando..." enquanto a página é baixada */}
+          <Suspense fallback={<p className="texto-vazio">Carregando...</p>}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>
