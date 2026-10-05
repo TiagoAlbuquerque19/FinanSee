@@ -1,6 +1,7 @@
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
+import ListaTransacoes from "../transacoes/ListaTransacoes/ListaTransacoes";
 import { useState, useEffect } from "react";
 import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
@@ -235,22 +236,10 @@ function MainLayout() {
           )}
 
           <h3>Transações</h3>
-          {transacoes.length === 0 ? (
-            <p>Nenhuma transação cadastrada ainda.</p>
-          ) : (
-            <ul>
-              {transacoes.map((transacao) => (
-                <li key={transacao.id}>
-                  {transacao.descricao} ({transacao.categoria}) —{" "}
-                  {transacao.tipo === "despesa" ? "-" : "+"}
-                  {formatarMoeda(transacao.valor)}
-                  <button onClick={() => excluirTransacao(transacao.id)}>
-                    Excluir
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ListaTransacoes
+            transacoes={transacoes}
+            onExcluir={excluirTransacao}
+          />
         </main>
       </div>
     </>
