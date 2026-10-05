@@ -1,12 +1,49 @@
 .layout {
   display: flex;
+  /* Ocupa a altura da tela, menos a altura do header */
+  min-height: calc(100vh - 73px);
 }
 
-.layout main {
+.conteudo {
   flex: 1;
+  min-width: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 32px;
-}
-.cards {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.conteudo-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.conteudo-topo h2 {
+  font-size: 24px;
+}
+
+/* Grid: 3 colunas do mesmo tamanho (1fr = "uma fração" do espaço) */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Formulários à esquerda, ranking à direita */
+.grade-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
