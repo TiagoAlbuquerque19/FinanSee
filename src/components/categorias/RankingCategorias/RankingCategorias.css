@@ -1,0 +1,37 @@
+.ranking {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ranking-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.ranking-valor {
+  color: var(--cor-texto-suave);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* O "trilho" cinza da barra */
+.ranking-barra {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--cor-fundo);
+  overflow: hidden;
+}
+
+/* A parte colorida; a largura vem do style no componente */
+.ranking-preenchimento {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--cor-primaria);
+}

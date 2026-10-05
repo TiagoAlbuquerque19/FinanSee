@@ -1,5 +1,6 @@
 import type { Transacao } from "../../../types/transacao";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
+import "./RankingCategorias.css";
 
 interface RankingCategoriasProps {
   transacoes: Transacao[];
@@ -35,17 +36,33 @@ function RankingCategorias({ transacoes }: RankingCategoriasProps) {
   gastosPorCategoria.sort((a, b) => b.total - a.total);
 
   if (gastosPorCategoria.length === 0) {
-    return <p>Nenhuma despesa neste mês.</p>;
+    return <p className="texto-vazio">Nenhuma despesa neste mês.</p>;
   }
 
   return (
-    <ol>
-      {gastosPorCategoria.map((item) => (
-        <li key={item.categoria}>
-          {item.categoria}: {formatarMoeda(item.total)} (
-          {Math.round((item.total / totalDespesas) * 100)}%)
-        </li>
-      ))}
+    <ol className="ranking">
+      {gastosPorCategoria.map((item) => {
+        const porcentagem = Math.round((item.total / totalDespesas) * 100);
+
+        return (
+          <li key={item.categoria}>
+            <div className="ranking-linha">
+              <span>{item.categoria}</span>
+              <span className="ranking-valor">
+                {formatarMoeda(item.total)} · {porcentagem}%
+              </span>
+            </div>
+
+            {/* A barra interna tem a largura da porcentagem: 40% → width: "40%" */}
+            <div className="ranking-barra">
+              <div
+                className="ranking-preenchimento"
+                style={{ width: `${porcentagem}%` }}
+              />
+            </div>
+          </li>
+        );
+      })}
     </ol>
   );
 }
