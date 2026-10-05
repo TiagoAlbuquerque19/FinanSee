@@ -253,3 +253,46 @@ select:focus {
 .barra-progresso-preenchimento--concluida {
   background: var(--cor-receita);
 }
+
+/* ==========================================================
+   CORES DOS GRÁFICOS
+   Paleta testada para daltonismo nos dois temas. Cada categoria
+   tem sempre a mesma cor (veja src/data/coresGraficos.ts).
+   ========================================================== */
+
+:root {
+  --grafico-1: #2a78d6; /* azul */
+  --grafico-2: #eb6834; /* laranja */
+  --grafico-3: #1baf7a; /* verde-água */
+  --grafico-4: #eda100; /* amarelo */
+  --grafico-5: #e87ba4; /* rosa */
+  --grafico-6: #008300; /* verde */
+  --grafico-7: #4a3aa7; /* violeta */
+  --grafico-8: #e34948; /* vermelho */
+  --grafico-neutro: #a3a6b1; /* "Outros" e categorias personalizadas */
+  --grafico-grade: #eceef2; /* linhas de fundo */
+  --grafico-eixo: #6b7280; /* textos dos eixos */
+}
+
+:root[data-tema="escuro"] {
+  --grafico-1: #3987e5;
+  --grafico-2: #d95926;
+  --grafico-3: #199e70;
+  --grafico-4: #c98500;
+  --grafico-5: #d55181;
+  --grafico-6: #008300;
+  --grafico-7: #9085e9;
+  --grafico-8: #e66767;
+  --grafico-neutro: #5d6170;
+  --grafico-grade: #232733;
+  --grafico-eixo: #9ca1b3;
+}
+
+/* Bolinha/quadradinho colorido usado nas legendas */
+.marcador-cor {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
