@@ -3,12 +3,13 @@ import Sidebar from "../Sidebar/Sidebar";
 import CardFinanceiro from "../dashboard/CardFinanceiro/CardFinanceiro";
 import NovaCategoriaForm from "../categorias/NovaCategoriaForm/NovaCategoriaForm";
 import RankingCategorias from "../categorias/RankingCategorias/RankingCategorias";
+import TransacaoForm from "../transacoes/TransacaoForm/TransacaoForm";
 import ListaTransacoes from "../transacoes/ListaTransacoes/ListaTransacoes";
 import { useState, useEffect } from "react";
 import "./MainLayout.css";
 import { formatarMoeda } from "../../utils/formatarMoeda";
-import type { Transacao, TipoTransacao } from "../../types/transacao";
-import { categoriasDespesa, categoriasReceita } from "../../data/categorias";
+import type { Transacao } from "../../types/transacao";
+import { categoriasDespesa } from "../../data/categorias";
 
 function carregarTransacoes(): Transacao[] {
   const dadosSalvos = localStorage.getItem("transacoes");
@@ -41,10 +42,6 @@ function carregarCategoriasPersonalizadas(): string[] {
 
 function MainLayout() {
   const [transacoes, setTransacoes] = useState<Transacao[]>(carregarTransacoes);
-  const [tipo, setTipo] = useState<TipoTransacao>("despesa");
-  const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState("");
-  const [categoria, setCategoria] = useState(categoriasDespesa[0]);
   const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
     string[]
   >(carregarCategoriasPersonalizadas);
@@ -54,9 +51,6 @@ function MainLayout() {
     ...categoriasDespesa,
     ...categoriasPersonalizadas,
   ];
-
-  const categoriasDoTipo =
-    tipo === "despesa" ? todasCategoriasDespesa : categoriasReceita;
 
   useEffect(() => {
     localStorage.setItem("transacoes", JSON.stringify(transacoes));
@@ -82,45 +76,12 @@ function MainLayout() {
 
   const saldo = receitas - despesas;
 
-  function adicionarTransacao() {
-    const valorNumerico = Number(valor);
-
-    if (descricao.trim() === "" || valorNumerico <= 0) {
-      alert("Preencha a descrição e um valor maior que zero.");
-      return;
-    }
-
-    const novaTransacao: Transacao = {
-      id: crypto.randomUUID(),
-      descricao: descricao.trim(),
-      valor: valorNumerico,
-      tipo,
-      categoria,
-      data: new Date().toISOString(),
-    };
-
+  function adicionarTransacao(novaTransacao: Transacao) {
     setTransacoes([novaTransacao, ...transacoes]);
-    setDescricao("");
-    setValor("");
-  }
-
-  function trocarTipo(novoTipo: TipoTransacao) {
-    setTipo(novoTipo);
-
-    // Cada tipo tem sua lista, então volta para a primeira categoria dela
-    if (novoTipo === "despesa") {
-      setCategoria(categoriasDespesa[0]);
-    } else {
-      setCategoria(categoriasReceita[0]);
-    }
   }
 
   function criarCategoria(nome: string) {
     setCategoriasPersonalizadas([...categoriasPersonalizadas, nome]);
-
-    // Já deixa a categoria nova selecionada no formulário
-    setTipo("despesa");
-    setCategoria(nome);
   }
 
   function excluirTransacao(id: string) {
@@ -141,39 +102,10 @@ function MainLayout() {
             <CardFinanceiro titulo="Despesas" valor={formatarMoeda(despesas)} />
           </div>
 
-          <h3>Nova transação</h3>
-          <input
-            type="text"
-            placeholder="Descrição"
-            value={descricao}
-            onChange={(evento) => setDescricao(evento.target.value)}
+          <TransacaoForm
+            categoriasDespesa={todasCategoriasDespesa}
+            onAdicionar={adicionarTransacao}
           />
-          <input
-            type="number"
-            placeholder="Valor"
-            value={valor}
-            onChange={(evento) => setValor(evento.target.value)}
-          />
-          <select
-            value={tipo}
-            onChange={(evento) =>
-              trocarTipo(evento.target.value as TipoTransacao)
-            }
-          >
-            <option value="despesa">Despesa</option>
-            <option value="receita">Receita</option>
-          </select>
-          <select
-            value={categoria}
-            onChange={(evento) => setCategoria(evento.target.value)}
-          >
-            {categoriasDoTipo.map((nome) => (
-              <option key={nome} value={nome}>
-                {nome}
-              </option>
-            ))}
-          </select>
-          <button onClick={adicionarTransacao}>Adicionar transação</button>
 
           <NovaCategoriaForm
             categoriasExistentes={todasCategoriasDespesa}
