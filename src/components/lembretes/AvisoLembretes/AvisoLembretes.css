@@ -1,0 +1,28 @@
+/* Um link com cara de botão */
+.aviso-lembretes {
+  position: relative;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+  text-decoration: none;
+}
+
+.aviso-lembretes:hover {
+  background: var(--cor-fundo);
+}
+
+/* A bolinha com o número, no canto do sino */
+.aviso-lembretes-numero {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--cor-despesa);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}

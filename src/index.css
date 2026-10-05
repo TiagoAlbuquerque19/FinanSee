@@ -307,3 +307,25 @@ select:focus {
   margin: 0;
   padding: 0;
 }
+
+/* ===== Cores de cada situação (sempre junto com ícone e texto) ===== */
+.situacao--pago {
+  background: var(--cor-receita-suave);
+  color: var(--cor-receita);
+}
+
+.situacao--atrasado {
+  background: var(--cor-despesa-suave);
+  color: var(--cor-despesa);
+}
+
+.situacao--hoje,
+.situacao--proximo {
+  background: var(--cor-aviso-suave);
+  color: var(--cor-aviso);
+}
+
+.situacao--futuro {
+  background: var(--cor-fundo);
+  color: var(--cor-texto-suave);
+}

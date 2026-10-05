@@ -53,28 +53,6 @@
   padding: 8px 14px;
 }
 
-/* ===== Cores de cada situação (sempre junto com ícone e texto) ===== */
-.situacao--pago {
-  background: var(--cor-receita-suave);
-  color: var(--cor-receita);
-}
-
-.situacao--atrasado {
-  background: var(--cor-despesa-suave);
-  color: var(--cor-despesa);
-}
-
-.situacao--hoje,
-.situacao--proximo {
-  background: var(--cor-aviso-suave);
-  color: var(--cor-aviso);
-}
-
-.situacao--futuro {
-  background: var(--cor-fundo);
-  color: var(--cor-texto-suave);
-}
-
 /* No celular, o valor desce para baixo do nome para sobrar espaço */
 @media (max-width: 520px) {
   .item-lembrete {
