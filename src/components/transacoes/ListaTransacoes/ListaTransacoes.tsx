@@ -1,5 +1,6 @@
 import type { Transacao } from "../../../types/transacao";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
+import { formatarData } from "../../../utils/datas";
 
 interface ListaTransacoesProps {
   transacoes: Transacao[];
@@ -11,11 +12,17 @@ function ListaTransacoes({ transacoes, onExcluir }: ListaTransacoesProps) {
     return <p>Nenhuma transação cadastrada ainda.</p>;
   }
 
+  // Copia a lista antes de ordenar, para não mexer na lista original
+  const transacoesOrdenadas = [...transacoes];
+
+  // Mais recentes primeiro
+  transacoesOrdenadas.sort((a, b) => b.data.localeCompare(a.data));
+
   return (
     <ul>
-      {transacoes.map((transacao) => (
+      {transacoesOrdenadas.map((transacao) => (
         <li key={transacao.id}>
-          {transacao.descricao} ({transacao.categoria}) —{" "}
+          {formatarData(transacao.data)} · {transacao.descricao} ({transacao.categoria}) —{" "}
           {transacao.tipo === "despesa" ? "-" : "+"}
           {formatarMoeda(transacao.valor)}
           <button onClick={() => onExcluir(transacao.id)}>Excluir</button>

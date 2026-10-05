@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Transacao, TipoTransacao } from "../../../types/transacao";
 import { categoriasReceita } from "../../../data/categorias";
+import { hoje } from "../../../utils/datas";
 
 interface TransacaoFormProps {
   categoriasDespesa: string[];
@@ -13,6 +14,7 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
   const [valor, setValor] = useState("");
   const [tipo, setTipo] = useState<TipoTransacao>("despesa");
   const [categoria, setCategoria] = useState(categoriasDespesa[0]);
+  const [data, setData] = useState(hoje());
 
   const categoriasDoTipo =
     tipo === "despesa" ? categoriasDespesa : categoriasReceita;
@@ -31,8 +33,8 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
   function adicionarTransacao() {
     const valorNumerico = Number(valor);
 
-    if (descricao.trim() === "" || valorNumerico <= 0) {
-      alert("Preencha a descrição e um valor maior que zero.");
+    if (descricao.trim() === "" || valorNumerico <= 0 || data === "") {
+      alert("Preencha a descrição, a data e um valor maior que zero.");
       return;
     }
 
@@ -42,7 +44,7 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
       valor: valorNumerico,
       tipo,
       categoria,
-      data: new Date().toISOString(),
+      data,
     };
 
     onAdicionar(novaTransacao);
@@ -64,6 +66,11 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
         placeholder="Valor"
         value={valor}
         onChange={(evento) => setValor(evento.target.value)}
+      />
+      <input
+        type="date"
+        value={data}
+        onChange={(evento) => setData(evento.target.value)}
       />
       <select
         value={tipo}
