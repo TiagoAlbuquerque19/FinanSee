@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import CardFinanceiro from "../../components/dashboard/CardFinanceiro/CardFinanceiro";
 import SeletorMes from "../../components/dashboard/SeletorMes/SeletorMes";
 import NovaCategoriaForm from "../../components/categorias/NovaCategoriaForm/NovaCategoriaForm";
@@ -78,10 +79,16 @@ function DashboardPage() {
       </div>
 
       <section className="painel">
-        <h3>Transações do mês</h3>
+        <div className="painel-topo">
+          <h3>Últimas transações</h3>
+          <Link to="/transacoes" className="link">
+            Ver todas →
+          </Link>
+        </div>
         <ListaTransacoes
           transacoes={transacoesDoMes}
           onExcluir={excluirTransacao}
+          limite={5}
         />
       </section>
     </>

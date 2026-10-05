@@ -172,3 +172,23 @@ select:focus {
   font-weight: 500;
   color: var(--cor-texto-suave);
 }
+
+/* ===== Título do painel com algo do lado direito (ex.: um link) ===== */
+
+.painel-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.link {
+  color: var(--cor-primaria);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,40 @@
+/* Formulário estreito à esquerda, lista larga à direita (1 parte e 2 partes) */
+.grade-transacoes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Busca, tipo e categoria lado a lado */
+.filtros {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+}
+
+.resumo-filtro {
+  margin: 16px 0 4px;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+.resumo-filtro strong {
+  color: var(--cor-texto);
+}
+
+@media (max-width: 960px) {
+  .grade-transacoes {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filtros-busca {
+    grid-column: 1 / -1;
+  }
+}

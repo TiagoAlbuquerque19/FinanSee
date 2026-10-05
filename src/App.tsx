@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import MainLayout from "./components/layout/MainLayout";
 import FinancasProvider from "./context/FinancasProvider";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import TransacoesPage from "./pages/Transacoes/TransacoesPage";
 import EmBrevePage from "./pages/EmBreve/EmBrevePage";
 
 function App() {
@@ -12,10 +13,7 @@ function App() {
           {/* Todas as páginas ficam dentro do MainLayout (header + sidebar) */}
           <Route element={<MainLayout />}>
             <Route index element={<DashboardPage />} />
-            <Route
-              path="transacoes"
-              element={<EmBrevePage titulo="Transações" />}
-            />
+            <Route path="transacoes" element={<TransacoesPage />} />
             <Route path="metas" element={<EmBrevePage titulo="Metas" />} />
             <Route
               path="lembretes"
