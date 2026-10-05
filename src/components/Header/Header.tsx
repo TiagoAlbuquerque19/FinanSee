@@ -1,10 +1,8 @@
 import BotaoTema from "../BotaoTema/BotaoTema";
 import AvisoLembretes from "../lembretes/AvisoLembretes/AvisoLembretes";
+import MenuUsuario from "../MenuUsuario/MenuUsuario";
+import { useAuth } from "../../hooks/useAuth";
 import "./Header.css";
-
-interface HeaderProps {
-  nome: string;
-}
 
 // "Bom dia", "Boa tarde" ou "Boa noite", conforme a hora
 function saudacao(): string {
@@ -21,7 +19,9 @@ function saudacao(): string {
   return "Boa noite";
 }
 
-function Header({ nome }: HeaderProps) {
+function Header() {
+  const { nome } = useAuth();
+
   const dataDeHoje = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
     day: "numeric",
@@ -43,8 +43,7 @@ function Header({ nome }: HeaderProps) {
       <div className="header-acoes">
         <AvisoLembretes />
         <BotaoTema />
-        {/* A primeira letra do nome vira o "avatar" */}
-        <span className="header-avatar">{nome[0]}</span>
+        <MenuUsuario />
       </div>
     </header>
   );

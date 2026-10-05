@@ -10,7 +10,7 @@ function MainLayout() {
     <div className="app">
       <Sidebar />
       <div className="app-principal">
-        <Header nome="Tiago" />
+        <Header />
         <main className="conteudo">
           <Outlet />
         </main>
