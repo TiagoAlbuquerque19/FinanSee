@@ -1,0 +1,57 @@
+.grade-categorias {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.lista-categorias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lista-categorias li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.lista-categorias li:last-child {
+  border-bottom: none;
+}
+
+.lista-categorias-nome {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lista-categorias-valor {
+  color: var(--cor-texto-suave);
+  white-space: nowrap;
+}
+
+.lista-categorias-espaco {
+  width: 32px;
+  flex-shrink: 0;
+}
+
+/* Pequeno selo ao lado do nome */
+.etiqueta {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+}
+
+@media (max-width: 768px) {
+  .grade-categorias {
+    grid-template-columns: 1fr;
+  }
+}

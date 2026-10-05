@@ -1,52 +1,48 @@
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 16px 32px;
   background: var(--cor-superficie);
   border-bottom: 1px solid var(--cor-borda);
 }
 
-.header-marca {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .header-logo {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--cor-primaria);
-  color: var(--cor-texto-botao);
-  font-weight: 700;
-  font-size: 20px;
+  display: none;
 }
 
-.header h1 {
-  font-size: 18px;
-  line-height: 1.2;
+.header-saudacao {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.header-subtitulo {
+.header-saudacao strong {
+  font-size: 16px;
+}
+
+.header-saudacao span {
   font-size: 13px;
   color: var(--cor-texto-suave);
 }
 
-.header-usuario {
+/* Primeira letra maiúscula: "Domingo, 5 de outubro" */
+.header-saudacao span::first-letter {
+  text-transform: uppercase;
+}
+
+.header-acoes {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--cor-texto-suave);
+  gap: 8px;
 }
 
 .header-avatar {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--cor-primaria-suave);
   color: var(--cor-primaria);
@@ -58,9 +54,7 @@
     padding: 12px 16px;
   }
 
-  /* No celular, esconde o subtítulo e o "Olá" para sobrar espaço */
-  .header-subtitulo,
-  .header-usuario > span:first-child {
-    display: none;
+  .header-logo {
+    display: grid;
   }
 }

@@ -1,51 +1,91 @@
 .sidebar {
-  width: 240px;
+  width: 248px;
   flex-shrink: 0;
-  padding: 24px 16px;
+  /* "sticky" faz a sidebar ficar parada enquanto a página rola */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 20px 14px;
   background: var(--cor-superficie);
   border-right: 1px solid var(--cor-borda);
 }
 
-.sidebar nav {
+.sidebar-marca {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  font-size: 18px;
 }
 
-.sidebar a {
-  padding: 10px 14px;
-  border-radius: 8px;
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   color: var(--cor-texto-suave);
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 }
 
-.sidebar a:hover {
+.sidebar-nav a:hover {
   background: var(--cor-fundo);
   color: var(--cor-texto);
 }
 
-.sidebar a.ativo {
+.sidebar-nav a.ativo {
   background: var(--cor-primaria-suave);
   color: var(--cor-primaria);
 }
 
-/* No celular, a sidebar vira uma faixa horizontal que dá para arrastar */
+/* ===== Celular: a sidebar vira uma barra de abas fixa embaixo da tela ===== */
 @media (max-width: 768px) {
   .sidebar {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
     width: 100%;
-    padding: 8px 16px;
+    height: auto;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
     border-right: none;
-    border-bottom: 1px solid var(--cor-borda);
-    overflow-x: auto;
+    border-top: 1px solid var(--cor-borda);
   }
 
-  .sidebar nav {
+  /* O logo já aparece no topo, então some daqui */
+  .sidebar-marca {
+    display: none;
+  }
+
+  .sidebar-nav {
     flex-direction: row;
+    justify-content: space-around;
   }
 
-  .sidebar a {
-    white-space: nowrap;
+  .sidebar-nav a {
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 2px;
+    font-size: 11px;
+  }
+
+  .sidebar-nav a.ativo {
+    background: transparent;
   }
 }

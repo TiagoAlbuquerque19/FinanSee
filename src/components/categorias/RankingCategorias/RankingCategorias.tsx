@@ -1,5 +1,6 @@
 import type { Transacao } from "../../../types/transacao";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
+import IconeCategoria from "../IconeCategoria/IconeCategoria";
 import "./RankingCategorias.css";
 
 interface RankingCategoriasProps {
@@ -45,20 +46,24 @@ function RankingCategorias({ transacoes }: RankingCategoriasProps) {
         const porcentagem = Math.round((item.total / totalDespesas) * 100);
 
         return (
-          <li key={item.categoria}>
-            <div className="ranking-linha">
-              <span>{item.categoria}</span>
-              <span className="ranking-valor">
-                {formatarMoeda(item.total)} · {porcentagem}%
-              </span>
-            </div>
+          <li key={item.categoria} className="ranking-item">
+            <IconeCategoria categoria={item.categoria} tipo="despesa" />
 
-            {/* A barra interna tem a largura da porcentagem: 40% → width: "40%" */}
-            <div className="ranking-barra">
-              <div
-                className="ranking-preenchimento"
-                style={{ width: `${porcentagem}%` }}
-              />
+            <div className="ranking-conteudo">
+              <div className="ranking-linha">
+                <span>{item.categoria}</span>
+                <span className="ranking-valor">
+                  {formatarMoeda(item.total)} · {porcentagem}%
+                </span>
+              </div>
+
+              {/* A barra interna tem a largura da porcentagem: 40% → width: "40%" */}
+              <div className="ranking-barra">
+                <div
+                  className="ranking-preenchimento"
+                  style={{ width: `${porcentagem}%` }}
+                />
+              </div>
             </div>
           </li>
         );
