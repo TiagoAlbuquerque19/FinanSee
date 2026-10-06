@@ -32,11 +32,18 @@
   font-size: 24px;
 }
 
-/* Grid: 3 colunas do mesmo tamanho (1fr = "uma fração" do espaço) */
+/* Grid: 4 colunas do mesmo tamanho (1fr = "uma fração" do espaço) */
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+}
+
+/* Telas médias: 2 cards por linha */
+@media (max-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Formulários à esquerda, ranking à direita */

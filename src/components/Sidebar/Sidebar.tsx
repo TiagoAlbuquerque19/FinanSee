@@ -4,6 +4,7 @@ import {
   Bell,
   ChartColumn,
   LayoutDashboard,
+  PiggyBank,
   Tags,
   Target,
 } from "lucide-react";
@@ -15,6 +16,7 @@ const itensMenu = [
   { caminho: "/", nome: "Dashboard", Icone: LayoutDashboard },
   { caminho: "/transacoes", nome: "Transações", Icone: ArrowLeftRight },
   { caminho: "/metas", nome: "Metas", Icone: Target },
+  { caminho: "/investimentos", nome: "Investimentos", Icone: PiggyBank },
   { caminho: "/relatorios", nome: "Relatórios", Icone: ChartColumn },
   { caminho: "/lembretes", nome: "Lembretes", Icone: Bell },
   { caminho: "/categorias", nome: "Categorias", Icone: Tags },

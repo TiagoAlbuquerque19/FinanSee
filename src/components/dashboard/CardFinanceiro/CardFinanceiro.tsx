@@ -1,6 +1,7 @@
 import {
   ArrowDownRight,
   ArrowUpRight,
+  PiggyBank,
   TrendingDown,
   TrendingUp,
   Wallet,
@@ -8,7 +9,7 @@ import {
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import "./CardFinanceiro.css";
 
-type Variante = "saldo" | "receita" | "despesa";
+type Variante = "saldo" | "receita" | "despesa" | "investimento";
 
 interface CardFinanceiroProps {
   titulo: string;
@@ -24,6 +25,7 @@ const icones = {
   saldo: Wallet,
   receita: TrendingUp,
   despesa: TrendingDown,
+  investimento: PiggyBank,
 };
 
 function CardFinanceiro({

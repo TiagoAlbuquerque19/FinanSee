@@ -1,0 +1,224 @@
+.cartao-investimento {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cartao-investimento-topo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cartao-investimento-icone {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+}
+
+.cartao-investimento-titulo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartao-investimento-titulo h3 {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cartao-investimento-titulo span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+/* Botão pequeno com cara de link (o lápis de editar) */
+.botao-link {
+  display: inline-grid;
+  place-items: center;
+  padding: 4px;
+  background: transparent;
+  color: var(--cor-texto-suave);
+}
+
+.botao-link:hover {
+  background: var(--cor-fundo);
+  color: var(--cor-primaria);
+}
+
+.cartao-investimento-saldo {
+  display: block;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.cartao-investimento-legenda {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.cartao-investimento-numeros {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.cartao-investimento-numeros li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cartao-investimento-numeros span {
+  color: var(--cor-texto-suave);
+}
+
+.cartao-investimento-numeros strong {
+  color: var(--cor-receita);
+}
+
+.cartao-investimento-comparacao {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--cor-fundo);
+  font-size: 14px;
+}
+
+.cartao-investimento-comparacao > span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.cartao-investimento-comparacao div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cartao-investimento-comparacao div span:last-child:not(:first-child) {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.cartao-investimento-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--cor-aviso-suave);
+  color: var(--cor-aviso);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cartao-investimento-aviso svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ===== Formulário de registro ===== */
+
+.cartao-investimento-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.cartao-investimento-form button {
+  grid-column: 1 / -1;
+}
+
+/* Os 3 botões de escolha (Guardar / Retirar / Atualizar saldo) */
+.cartao-investimento-tipos {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 4px;
+  gap: 4px;
+  border-radius: 10px;
+  background: var(--cor-fundo);
+}
+
+.cartao-investimento-tipos label {
+  position: relative;
+  padding: 8px 4px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+}
+
+.cartao-investimento-tipos label.ativo {
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  box-shadow: var(--sombra);
+}
+
+/* A "bolinha" do radio fica escondida; o label inteiro é o botão.
+   width/height pequenos porque os inputs têm width: 100% no index.css */
+.cartao-investimento-tipos input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cartao-investimento-tipos label:has(input:focus-visible) {
+  outline: 2px solid var(--cor-primaria);
+}
+
+/* ===== Histórico ===== */
+
+.cartao-investimento-historico summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cor-primaria);
+}
+
+.cartao-investimento-historico ul {
+  margin-top: 8px;
+}
+
+.cartao-investimento-historico li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.cartao-investimento-historico li:last-child {
+  border-bottom: none;
+}
+
+.cartao-investimento-historico-tipo {
+  flex: 1;
+  color: var(--cor-texto-suave);
+}

@@ -1,0 +1,51 @@
+.resumo-investimentos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.resumo-investimentos-numeros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.resumo-investimentos-numeros div {
+  display: flex;
+  flex-direction: column;
+}
+
+.resumo-investimentos-numeros span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.resumo-investimentos-numeros strong {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.resumo-investimentos-rende {
+  color: var(--cor-receita);
+}
+
+.resumo-investimentos-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--cor-aviso-suave);
+  color: var(--cor-aviso);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.resumo-investimentos-aviso svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.resumo-investimentos-aviso:hover span {
+  text-decoration: underline;
+}
