@@ -1,0 +1,36 @@
+.investimentos-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.investimentos-total span {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.investimentos-total strong {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.investimentos-por-dia {
+  color: var(--cor-receita) !important;
+}
+
+.grade-investimentos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .investimentos-total {
+    align-items: flex-start;
+  }
+
+  .grade-investimentos {
+    grid-template-columns: 1fr;
+  }
+}

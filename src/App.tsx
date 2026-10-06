@@ -17,6 +17,9 @@ const CategoriasPage = lazy(() => import("./pages/Categorias/CategoriasPage"));
 const MetasPage = lazy(() => import("./pages/Metas/MetasPage"));
 const RelatoriosPage = lazy(() => import("./pages/Relatorios/RelatoriosPage"));
 const LembretesPage = lazy(() => import("./pages/Lembretes/LembretesPage"));
+const InvestimentosPage = lazy(
+  () => import("./pages/Investimentos/InvestimentosPage"),
+);
 
 function App() {
   return (
@@ -56,6 +59,7 @@ function App() {
               <Route index element={<DashboardPage />} />
               <Route path="transacoes" element={<TransacoesPage />} />
               <Route path="metas" element={<MetasPage />} />
+              <Route path="investimentos" element={<InvestimentosPage />} />
               <Route path="relatorios" element={<RelatoriosPage />} />
               <Route path="lembretes" element={<LembretesPage />} />
               <Route path="categorias" element={<CategoriasPage />} />

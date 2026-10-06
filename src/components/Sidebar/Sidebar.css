@@ -72,13 +72,16 @@
     display: none;
   }
 
+  /* Com muitos itens, a barra rola para o lado */
   .sidebar-nav {
     flex-direction: row;
     justify-content: space-around;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
   .sidebar-nav a {
-    flex: 1;
+    flex: 1 0 64px;
     flex-direction: column;
     gap: 2px;
     padding: 6px 2px;
