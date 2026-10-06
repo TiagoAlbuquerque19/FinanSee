@@ -68,15 +68,15 @@ function InvestimentosPage() {
     rendendoPorDia = rendendoPorDia + (resumo.rendimentoPorDia ?? 0);
   }
 
-  // Cria o cofrinho e, se tiver valor inicial, registra o primeiro aporte
+  // Cria o cofrinho e, se tiver valor inicial, registra o saldo inicial
   async function criar(
     investimento: Investimento,
-    aporteInicial: MovimentoInvestimento | null,
+    saldoInicial: MovimentoInvestimento | null,
   ) {
     await criarInvestimento(investimento);
 
-    if (aporteInicial) {
-      await adicionarMovimento(aporteInicial);
+    if (saldoInicial) {
+      await adicionarMovimento(saldoInicial);
     }
   }
 

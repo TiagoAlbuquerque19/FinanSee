@@ -6,9 +6,11 @@ import TransacaoForm from "../../components/transacoes/TransacaoForm/TransacaoFo
 import ListaTransacoes from "../../components/transacoes/ListaTransacoes/ListaTransacoes";
 import GraficoMensal from "../../components/graficos/GraficoMensal/GraficoMensal";
 import ProximosVencimentos from "../../components/lembretes/ProximosVencimentos/ProximosVencimentos";
+import ResumoInvestimentos from "../../components/investimentos/ResumoInvestimentos/ResumoInvestimentos";
 import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
 import { calcularResumo } from "../../utils/calcularResumo";
 import { resumoPorMes } from "../../utils/resumoPorMes";
+import { investidoNoMes } from "../../utils/investimentos";
 import { mudarMes, nomeDoMes } from "../../utils/datas";
 import { useFinancas } from "../../hooks/useFinancas";
 
@@ -23,9 +25,17 @@ function DashboardPage() {
     excluirTransacao,
     metas,
     lembretes,
+    investimentos,
+    movimentosInvestimento,
+    cdi,
   } = useFinancas();
 
   const atual = calcularResumo(transacoesDoMes);
+
+  // O que foi para os cofrinhos no mês não é despesa, mas sai do saldo:
+  // o dinheiro não está mais na conta (está guardado)
+  const investidoAtual = investidoNoMes(movimentosInvestimento, mesSelecionado);
+  const saldoAtual = atual.saldo - investidoAtual;
 
   // Mesmo cálculo para o mês anterior, para comparar nos cards
   const mesAnterior = mudarMes(mesSelecionado, -1);
@@ -33,7 +43,10 @@ function DashboardPage() {
     (transacao) => transacao.data.slice(0, 7) === mesAnterior,
   );
   const anterior = calcularResumo(transacoesMesAnterior);
-  const temMesAnterior = transacoesMesAnterior.length > 0;
+  const investidoAnterior = investidoNoMes(movimentosInvestimento, mesAnterior);
+  const saldoAnterior = anterior.saldo - investidoAnterior;
+  const temMesAnterior =
+    transacoesMesAnterior.length > 0 || investidoAnterior !== 0;
   const nomeMesAnterior = nomeDoMes(mesAnterior);
 
   return (
@@ -46,9 +59,9 @@ function DashboardPage() {
       <div className="cards">
         <CardFinanceiro
           titulo="Saldo do mês"
-          valor={atual.saldo}
+          valor={saldoAtual}
           variante="saldo"
-          valorAnterior={temMesAnterior ? anterior.saldo : null}
+          valorAnterior={temMesAnterior ? saldoAnterior : null}
           nomeMesAnterior={nomeMesAnterior}
         />
         <CardFinanceiro
@@ -63,6 +76,13 @@ function DashboardPage() {
           valor={atual.despesas}
           variante="despesa"
           valorAnterior={temMesAnterior ? anterior.despesas : null}
+          nomeMesAnterior={nomeMesAnterior}
+        />
+        <CardFinanceiro
+          titulo="Investido no mês"
+          valor={investidoAtual}
+          variante="investimento"
+          valorAnterior={temMesAnterior ? investidoAnterior : null}
           nomeMesAnterior={nomeMesAnterior}
         />
       </div>
@@ -99,6 +119,20 @@ function DashboardPage() {
               </Link>
             </div>
             <ResumoMetas metas={metas} />
+          </section>
+
+          <section className="painel">
+            <div className="painel-topo">
+              <h3>Seus cofrinhos</h3>
+              <Link to="/investimentos" className="link">
+                Ver todos →
+              </Link>
+            </div>
+            <ResumoInvestimentos
+              investimentos={investimentos}
+              movimentos={movimentosInvestimento}
+              cdi={cdi}
+            />
           </section>
         </div>
       </div>

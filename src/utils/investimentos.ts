@@ -109,6 +109,12 @@ export function calcularInvestimento(
         } else if (tipo === "resgate") {
           conhecido = Math.max(0, conhecido - valor);
           estimado = Math.max(0, estimado - valor);
+        } else if (indice === 0) {
+          // O primeiro registro sendo um saldo é o valor inicial do cofrinho
+          // (o que já tinha nele ao cadastrar): não é rendimento
+          conhecido = valor;
+          estimado = valor;
+          ultimoSaldoEm = textoDoDia;
         } else {
           // Saldo conferido: o que passou do "conhecido" é rendimento real
           fechamentos.push({

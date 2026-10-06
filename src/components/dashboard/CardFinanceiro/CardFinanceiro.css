@@ -72,3 +72,9 @@
 .comparacao-ruim {
   color: var(--cor-despesa);
 }
+
+.card-financeiro-icone--investimento {
+  /* color-mix mistura 15% da cor com transparente: um fundo bem clarinho */
+  background: color-mix(in srgb, var(--grafico-3) 15%, transparent);
+  color: var(--grafico-3);
+}

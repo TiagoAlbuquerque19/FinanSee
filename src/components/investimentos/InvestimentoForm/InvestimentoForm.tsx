@@ -8,10 +8,12 @@ import { hoje } from "../../../utils/datas";
 import "./InvestimentoForm.css";
 
 interface InvestimentoFormProps {
-  // O valor inicial (opcional) vira o primeiro aporte do cofrinho
+  // O valor inicial (opcional) vira o primeiro "saldo conferido" do
+  // cofrinho: é dinheiro que já estava lá, então não conta como investido
+  // no mês nem como rendimento
   onCriar: (
     investimento: Investimento,
-    aporteInicial: MovimentoInvestimento | null,
+    saldoInicial: MovimentoInvestimento | null,
   ) => void;
 }
 
@@ -50,18 +52,18 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
       percentualCdi: percentualNumero,
     };
 
-    const aporteInicial: MovimentoInvestimento | null =
+    const saldoInicial: MovimentoInvestimento | null =
       valorNumero > 0
         ? {
             id: crypto.randomUUID(),
             investimentoId: investimento.id,
-            tipo: "aporte",
+            tipo: "saldo",
             valor: valorNumero,
             data,
           }
         : null;
 
-    onCriar(investimento, aporteInicial);
+    onCriar(investimento, saldoInicial);
     setNome("");
     setValorInicial("");
   }
@@ -137,7 +139,7 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
       </label>
 
       <label className="campo">
-        <span>Desde quando</span>
+        <span>Data desse valor</span>
         <input
           type="date"
           value={data}
