@@ -4,8 +4,13 @@ import { FinancasContext } from "./FinancasContext";
 import type { Transacao } from "../types/transacao";
 import type { Meta } from "../types/meta";
 import type { Lembrete } from "../types/lembrete";
+import type {
+  ConfiguracaoCdi,
+  Investimento,
+  MovimentoInvestimento,
+} from "../types/investimento";
 import { categoriasDespesa } from "../data/categorias";
-import { mesAtual } from "../utils/datas";
+import { hoje, mesAtual } from "../utils/datas";
 import * as banco from "../services/banco";
 import {
   apagarDadosLocais,
@@ -35,6 +40,16 @@ function FinancasProvider({ children }: FinancasProviderProps) {
   >([]);
   const [metas, setMetas] = useState<Meta[]>([]);
   const [lembretes, setLembretes] = useState<Lembrete[]>([]);
+  const [investimentos, setInvestimentos] = useState<Investimento[]>([]);
+  const [movimentosInvestimento, setMovimentosInvestimento] = useState<
+    MovimentoInvestimento[]
+  >([]);
+  const [cdi, setCdi] = useState<ConfiguracaoCdi>({
+    cdiAnual: null,
+    atualizadoEm: null,
+  });
+  const [faltaMigracaoInvestimentos, setFaltaMigracaoInvestimentos] =
+    useState(false);
   const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
 
   const [carregando, setCarregando] = useState(true);
@@ -51,6 +66,10 @@ function FinancasProvider({ children }: FinancasProviderProps) {
       setCategoriasPersonalizadas(dados.categorias);
       setMetas(dados.metas);
       setLembretes(dados.lembretes);
+      setInvestimentos(dados.investimentos);
+      setMovimentosInvestimento(dados.movimentos);
+      setCdi(dados.cdi);
+      setFaltaMigracaoInvestimentos(dados.faltaMigracaoInvestimentos);
     });
   }
 
@@ -218,6 +237,70 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     }
   }
 
+  async function criarInvestimento(novo: Investimento) {
+    try {
+      await banco.inserirInvestimento(novo);
+      setInvestimentos((lista) => [...lista, novo]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function alterarPercentualCdi(id: string, percentual: number) {
+    try {
+      await banco.atualizarPercentualCdi(id, percentual);
+      setInvestimentos((lista) =>
+        lista.map((item) =>
+          item.id === id ? { ...item, percentualCdi: percentual } : item,
+        ),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirInvestimento(id: string) {
+    try {
+      await banco.apagarInvestimento(id);
+      setInvestimentos((lista) => lista.filter((item) => item.id !== id));
+      // O banco já apagou o histórico; aqui tiramos da tela também
+      setMovimentosInvestimento((lista) =>
+        lista.filter((movimento) => movimento.investimentoId !== id),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function adicionarMovimento(movimento: MovimentoInvestimento) {
+    try {
+      await banco.inserirMovimento(movimento);
+      setMovimentosInvestimento((lista) => [...lista, movimento]);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function excluirMovimento(id: string) {
+    try {
+      await banco.apagarMovimento(id);
+      setMovimentosInvestimento((lista) =>
+        lista.filter((movimento) => movimento.id !== id),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
+  async function salvarCdi(cdiAnual: number) {
+    try {
+      await banco.salvarCdi(cdiAnual, hoje());
+      setCdi({ cdiAnual, atualizadoEm: hoje() });
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
   if (carregando) {
     return <TelaCarregando texto="Carregando seus dados..." />;
   }
@@ -254,6 +337,16 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         criarLembrete,
         excluirLembrete,
         alternarPagamento,
+        faltaMigracaoInvestimentos,
+        investimentos,
+        movimentosInvestimento,
+        cdi,
+        criarInvestimento,
+        alterarPercentualCdi,
+        excluirInvestimento,
+        adicionarMovimento,
+        excluirMovimento,
+        salvarCdi,
         quantidadeDadosLocais,
         importarDadosLocais,
         descartarDadosLocais,

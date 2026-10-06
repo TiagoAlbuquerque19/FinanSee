@@ -2,6 +2,11 @@ import { createContext } from "react";
 import type { Transacao } from "../types/transacao";
 import type { Meta } from "../types/meta";
 import type { Lembrete } from "../types/lembrete";
+import type {
+  ConfiguracaoCdi,
+  Investimento,
+  MovimentoInvestimento,
+} from "../types/investimento";
 
 // Tudo o que as telas do FinanSee podem ler e fazer com os dados.
 // As ações devolvem Promise<void>: elas conversam com o banco e levam
@@ -27,6 +32,17 @@ export interface FinancasContextValor {
   excluirLembrete: (id: string) => Promise<void>;
   // Marca (ou desmarca) o pagamento de um lembrete num mês "AAAA-MM"
   alternarPagamento: (id: string, mes: string) => Promise<void>;
+  // true se o SQL dos investimentos ainda não foi rodado no Supabase
+  faltaMigracaoInvestimentos: boolean;
+  investimentos: Investimento[];
+  movimentosInvestimento: MovimentoInvestimento[];
+  cdi: ConfiguracaoCdi;
+  criarInvestimento: (investimento: Investimento) => Promise<void>;
+  alterarPercentualCdi: (id: string, percentual: number) => Promise<void>;
+  excluirInvestimento: (id: string) => Promise<void>;
+  adicionarMovimento: (movimento: MovimentoInvestimento) => Promise<void>;
+  excluirMovimento: (id: string) => Promise<void>;
+  salvarCdi: (cdiAnual: number) => Promise<void>;
   // Quantos itens antigos (salvos só neste navegador) ainda dá para importar
   quantidadeDadosLocais: number;
   importarDadosLocais: () => Promise<void>;
