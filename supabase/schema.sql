@@ -100,6 +100,9 @@ create table public.investimentos (
   nome text not null,
   banco text not null,
   percentual_cdi numeric(6, 2) not null default 100 check (percentual_cdi >= 0),
+  -- nenhuma | fundo | cdb (veja supabase/migracoes/003_imposto_investimentos.sql)
+  tributacao text not null default 'nenhuma'
+    check (tributacao in ('nenhuma', 'fundo', 'cdb')),
   criado_em timestamptz not null default now()
 );
 
