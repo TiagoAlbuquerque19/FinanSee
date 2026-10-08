@@ -2,7 +2,9 @@ import { useState } from "react";
 import type {
   Investimento,
   MovimentoInvestimento,
+  Tributacao,
 } from "../../../types/investimento";
+import { opcoesTributacao } from "../../../data/tributacoes";
 import { bancos } from "../../../data/bancos";
 import { hoje } from "../../../utils/datas";
 import "./InvestimentoForm.css";
@@ -22,6 +24,7 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
   const [banco, setBanco] = useState(bancos[0]);
   const [outroBanco, setOutroBanco] = useState("");
   const [percentual, setPercentual] = useState("100");
+  const [tributacao, setTributacao] = useState<Tributacao>("nenhuma");
   const [valorInicial, setValorInicial] = useState("");
   const [data, setData] = useState(hoje());
 
@@ -50,6 +53,7 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
       nome: nome.trim(),
       banco: nomeDoBanco,
       percentualCdi: percentualNumero,
+      tributacao,
     };
 
     const saldoInicial: MovimentoInvestimento | null =
@@ -127,6 +131,22 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
       </label>
 
       <label className="campo">
+        <span>Imposto de renda</span>
+        <select
+          value={tributacao}
+          onChange={(evento) =>
+            setTributacao(evento.target.value as Tributacao)
+          }
+        >
+          {opcoesTributacao.map((opcao) => (
+            <option key={opcao.valor} value={opcao.valor}>
+              {opcao.nome}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="campo">
         <span>Quanto tem nele hoje (opcional)</span>
         <input
           type="number"
@@ -149,7 +169,8 @@ function InvestimentoForm({ onCriar }: InvestimentoFormProps) {
 
       <p className="investimento-form-dica">
         O % do CDI aparece no app do banco, na tela do cofrinho (ex.: “rende
-        100% do CDI”).
+        100% do CDI”). Escolha descontar o imposto se o banco mostra o saldo
+        líquido; o imposto é calculado sobre o que render a partir do cadastro.
       </p>
 
       <button type="submit">Criar cofrinho</button>

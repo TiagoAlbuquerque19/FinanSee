@@ -41,7 +41,7 @@ function ResumoInvestimentos({
   for (const investimento of investimentos) {
     const resumo = calcularInvestimento(
       movimentos.filter((m) => m.investimentoId === investimento.id),
-      investimento.percentualCdi,
+      investimento,
       cdi.cdiAnual,
       hoje(),
     );

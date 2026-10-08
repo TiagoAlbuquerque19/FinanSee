@@ -8,6 +8,7 @@ import type {
   ConfiguracaoCdi,
   Investimento,
   MovimentoInvestimento,
+  Tributacao,
 } from "../types/investimento";
 import { categoriasDespesa } from "../data/categorias";
 import { hoje, mesAtual } from "../utils/datas";
@@ -259,6 +260,17 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     }
   }
 
+  async function alterarTributacao(id: string, tributacao: Tributacao) {
+    try {
+      await banco.atualizarTributacao(id, tributacao);
+      setInvestimentos((lista) =>
+        lista.map((item) => (item.id === id ? { ...item, tributacao } : item)),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
   async function excluirInvestimento(id: string) {
     try {
       await banco.apagarInvestimento(id);
@@ -343,6 +355,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         cdi,
         criarInvestimento,
         alterarPercentualCdi,
+        alterarTributacao,
         excluirInvestimento,
         adicionarMovimento,
         excluirMovimento,

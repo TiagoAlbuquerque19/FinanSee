@@ -20,6 +20,7 @@ function InvestimentosPage() {
     salvarCdi,
     criarInvestimento,
     alterarPercentualCdi,
+    alterarTributacao,
     excluirInvestimento,
     adicionarMovimento,
     excluirMovimento,
@@ -53,7 +54,7 @@ function InvestimentosPage() {
       movimentos,
       resumo: calcularInvestimento(
         movimentos,
-        investimento.percentualCdi,
+        investimento,
         cdi.cdiAnual,
         hoje(),
       ),
@@ -119,6 +120,7 @@ function InvestimentosPage() {
               onMovimentar={adicionarMovimento}
               onExcluirMovimento={excluirMovimento}
               onAlterarPercentual={alterarPercentualCdi}
+              onAlterarTributacao={alterarTributacao}
               onExcluir={excluirInvestimento}
             />
           ))}
