@@ -6,6 +6,7 @@ import type {
   ConfiguracaoCdi,
   Investimento,
   MovimentoInvestimento,
+  Tributacao,
 } from "../types/investimento";
 
 // Tudo o que as telas do FinanSee podem ler e fazer com os dados.
@@ -39,6 +40,7 @@ export interface FinancasContextValor {
   cdi: ConfiguracaoCdi;
   criarInvestimento: (investimento: Investimento) => Promise<void>;
   alterarPercentualCdi: (id: string, percentual: number) => Promise<void>;
+  alterarTributacao: (id: string, tributacao: Tributacao) => Promise<void>;
   excluirInvestimento: (id: string) => Promise<void>;
   adicionarMovimento: (movimento: MovimentoInvestimento) => Promise<void>;
   excluirMovimento: (id: string) => Promise<void>;

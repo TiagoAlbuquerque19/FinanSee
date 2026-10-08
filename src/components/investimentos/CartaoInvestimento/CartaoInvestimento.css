@@ -91,6 +91,17 @@
 
 .cartao-investimento-numeros strong {
   color: var(--cor-receita);
+  white-space: nowrap;
+}
+
+/* O imposto aparece na cor do texto, não em verde */
+.cartao-investimento-numeros .cartao-investimento-imposto {
+  color: var(--cor-texto);
+}
+
+.cartao-investimento-tributacao select {
+  padding: 8px 10px;
+  font-size: 14px;
 }
 
 .cartao-investimento-comparacao {

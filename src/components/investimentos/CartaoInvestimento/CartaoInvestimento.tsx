@@ -4,7 +4,9 @@ import type {
   Investimento,
   MovimentoInvestimento,
   TipoMovimento,
+  Tributacao,
 } from "../../../types/investimento";
+import { opcoesTributacao } from "../../../data/tributacoes";
 import type { ResumoInvestimento } from "../../../utils/investimentos";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import { formatarData, hoje } from "../../../utils/datas";
@@ -17,6 +19,7 @@ interface CartaoInvestimentoProps {
   onMovimentar: (movimento: MovimentoInvestimento) => void;
   onExcluirMovimento: (id: string) => void;
   onAlterarPercentual: (id: string, percentual: number) => void;
+  onAlterarTributacao: (id: string, tributacao: Tributacao) => void;
   onExcluir: (id: string) => void;
 }
 
@@ -29,6 +32,11 @@ const nomesDosTipos: Record<TipoMovimento, string> = {
 
 // "+ R$ 12,30" ou "− R$ 2,00"
 function comSinal(valor: number): string {
+  // Menos de meio centavo conta como zero (evita aparecer "− R$ 0,00")
+  if (Math.abs(valor) < 0.005) {
+    return formatarMoeda(0);
+  }
+
   return `${valor < 0 ? "−" : "+"} ${formatarMoeda(Math.abs(valor))}`;
 }
 
@@ -39,6 +47,7 @@ function CartaoInvestimento({
   onMovimentar,
   onExcluirMovimento,
   onAlterarPercentual,
+  onAlterarTributacao,
   onExcluir,
 }: CartaoInvestimentoProps) {
   const [tipo, setTipo] = useState<TipoMovimento>("aporte");
@@ -148,14 +157,19 @@ function CartaoInvestimento({
         <span className="cartao-investimento-legenda">
           {resumo.saldoEstimado === null
             ? "Saldo (informe o CDI para estimar o rendimento)"
-            : "Saldo estimado hoje"}
+            : investimento.tributacao === "nenhuma"
+              ? "Saldo estimado hoje"
+              : "Saldo líquido estimado hoje (já sem o imposto)"}
         </span>
       </div>
 
       {resumo.rendimentoPorDia !== null && (
         <ul className="cartao-investimento-numeros">
           <li>
-            <span>Rendendo por dia útil</span>
+            <span>
+              Rendendo por dia útil
+              {investimento.tributacao !== "nenhuma" && " (líquido)"}
+            </span>
             <strong>~ {formatarMoeda(resumo.rendimentoPorDia)}</strong>
           </li>
           {resumo.ultimoSaldoEm &&
@@ -168,8 +182,36 @@ function CartaoInvestimento({
                 <strong>{comSinal(resumo.rendimentoDesdeUltimoSaldo)}</strong>
               </li>
             )}
+          {investimento.tributacao !== "nenhuma" && (
+            <li>
+              <span>Imposto se resgatasse hoje</span>
+              <strong className="cartao-investimento-imposto">
+                {formatarMoeda(resumo.impostoEstimado)}
+              </strong>
+            </li>
+          )}
         </ul>
       )}
+
+      {/* Imposto de renda: muda na hora como o saldo é calculado */}
+      <label className="campo cartao-investimento-tributacao">
+        <span>Imposto de renda</span>
+        <select
+          value={investimento.tributacao}
+          onChange={(evento) =>
+            onAlterarTributacao(
+              investimento.id,
+              evento.target.value as Tributacao,
+            )
+          }
+        >
+          {opcoesTributacao.map((opcao) => (
+            <option key={opcao.valor} value={opcao.valor}>
+              {opcao.nome}
+            </option>
+          ))}
+        </select>
+      </label>
 
       {/* Comparação do último mês: o que o banco disse x o que o app estimou */}
       {ultimoFechamento && (

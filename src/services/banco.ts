@@ -7,6 +7,7 @@ import type {
   Investimento,
   MovimentoInvestimento,
   TipoMovimento,
+  Tributacao,
 } from "../types/investimento";
 
 // =============================================================
@@ -66,6 +67,8 @@ interface LinhaInvestimento {
   nome: string;
   banco: string;
   percentual_cdi: number;
+  // Pode não existir se o SQL 003 ainda não foi rodado
+  tributacao?: Tributacao;
 }
 
 interface LinhaMovimento {
@@ -110,6 +113,7 @@ function deLinhaInvestimento(linha: LinhaInvestimento): Investimento {
     nome: linha.nome,
     banco: linha.banco,
     percentualCdi: Number(linha.percentual_cdi),
+    tributacao: linha.tributacao ?? "nenhuma",
   };
 }
 
@@ -300,7 +304,31 @@ export async function inserirInvestimento(investimento: Investimento) {
     nome: investimento.nome,
     banco: investimento.banco,
     percentual_cdi: investimento.percentualCdi,
+    // Só envia a coluna quando precisa: assim criar cofrinho continua
+    // funcionando mesmo antes de rodar o SQL 003
+    ...(investimento.tributacao !== "nenhuma"
+      ? { tributacao: investimento.tributacao }
+      : {}),
   });
+  verificarTributacao(error);
+}
+
+export async function atualizarTributacao(id: string, tributacao: Tributacao) {
+  const { error } = await supabase
+    .from("investimentos")
+    .update({ tributacao })
+    .eq("id", id);
+  verificarTributacao(error);
+}
+
+// Erro de coluna inexistente vira uma mensagem que diz o que fazer
+function verificarTributacao(error: { message: string } | null) {
+  if (error && error.message.includes("tributacao")) {
+    throw new Error(
+      "Falta rodar o arquivo supabase/migracoes/003_imposto_investimentos.sql no Supabase.",
+    );
+  }
+
   verificar(error);
 }
 
