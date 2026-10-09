@@ -20,6 +20,7 @@ export interface FinancasContextValor {
   mesSelecionado: string;
   setMesSelecionado: (mes: string) => void;
   adicionarTransacao: (transacao: Transacao) => Promise<void>;
+  editarTransacao: (transacao: Transacao) => Promise<void>;
   excluirTransacao: (id: string) => Promise<void>;
   criarCategoria: (nome: string) => Promise<void>;
   excluirCategoria: (nome: string) => Promise<void>;

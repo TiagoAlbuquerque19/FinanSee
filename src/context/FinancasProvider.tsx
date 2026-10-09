@@ -126,6 +126,20 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     }
   }
 
+  async function editarTransacao(transacaoEditada: Transacao) {
+    try {
+      await banco.atualizarTransacao(transacaoEditada);
+      // Troca só a transação editada; as outras continuam iguais
+      setTransacoes((lista) =>
+        lista.map((transacao) =>
+          transacao.id === transacaoEditada.id ? transacaoEditada : transacao,
+        ),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
   async function excluirTransacao(id: string) {
     try {
       await banco.apagarTransacao(id);
@@ -338,6 +352,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         mesSelecionado,
         setMesSelecionado,
         adicionarTransacao,
+        editarTransacao,
         excluirTransacao,
         criarCategoria,
         excluirCategoria,
