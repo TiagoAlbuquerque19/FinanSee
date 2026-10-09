@@ -221,7 +221,8 @@ select:focus {
   border-radius: 10px;
 }
 
-/* Botão de excluir: discreto, fica vermelho ao passar o mouse */
+/* Botões de editar e excluir: discretos, só com ícone */
+.botao-editar,
 .botao-excluir {
   display: grid;
   place-items: center;
@@ -236,6 +237,11 @@ select:focus {
 .botao-excluir:hover {
   background: var(--cor-despesa-suave);
   color: var(--cor-despesa);
+}
+
+.botao-editar:hover {
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
 }
 
 /* ===== Barra de progresso (metas) ===== */

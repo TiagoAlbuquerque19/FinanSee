@@ -16,8 +16,15 @@
   margin-bottom: 2px;
 }
 
-.transacao-form button {
+.transacao-form-botoes {
+  display: flex;
+  gap: 8px;
   margin-top: 4px;
+}
+
+/* O botão principal ocupa o espaço que sobrar */
+.transacao-form-botoes button[type="submit"] {
+  flex: 1;
 }
 
 /* Em telas bem pequenas, um campo por linha */

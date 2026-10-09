@@ -1,0 +1,18 @@
+/* O <dialog> vem com borda e fundo do navegador: tiramos tudo, porque
+   quem desenha a "caixa" é o próprio formulário (.painel) */
+.editar-transacao {
+  width: min(520px, calc(100% - 32px));
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+}
+
+/* O fundo escurecido atrás da janela */
+.editar-transacao::backdrop {
+  background: rgba(10, 12, 18, 0.55);
+}
+
+.editar-transacao .painel {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
