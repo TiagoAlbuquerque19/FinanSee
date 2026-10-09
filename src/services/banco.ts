@@ -234,6 +234,16 @@ export async function inserirTransacao(transacao: Transacao) {
   verificar(error);
 }
 
+export async function atualizarTransacao(transacao: Transacao) {
+  // Copiamos tudo menos o id (o id não muda; ele diz QUAL linha atualizar)
+  const { id, ...campos } = paraLinhaTransacao(transacao);
+  const { error } = await supabase
+    .from("transacoes")
+    .update(campos)
+    .eq("id", id);
+  verificar(error);
+}
+
 export async function apagarTransacao(id: string) {
   const { error } = await supabase.from("transacoes").delete().eq("id", id);
   verificar(error);

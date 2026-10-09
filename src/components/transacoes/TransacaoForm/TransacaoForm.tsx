@@ -7,18 +7,44 @@ import "./TransacaoForm.css";
 interface TransacaoFormProps {
   categoriasDespesa: string[];
   onAdicionar: (transacao: Transacao) => void;
+  // Opcional: se vier, o formulário abre preenchido (modo edição)
+  transacaoInicial?: Transacao;
+  // Opcional: aparece um botão "Cancelar" (usado na janela de edição)
+  onCancelar?: () => void;
 }
 
-function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
-  // Estes estados só servem para o formulário, então ficam aqui dentro
-  const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState("");
-  const [tipo, setTipo] = useState<TipoTransacao>("despesa");
-  const [categoria, setCategoria] = useState(categoriasDespesa[0]);
-  const [data, setData] = useState(hoje());
+function TransacaoForm({
+  categoriasDespesa,
+  onAdicionar,
+  transacaoInicial,
+  onCancelar,
+}: TransacaoFormProps) {
+  const editando = transacaoInicial !== undefined;
 
-  const categoriasDoTipo =
+  // Estes estados só servem para o formulário, então ficam aqui dentro.
+  // Editando, cada campo começa com o valor da transação; senão, vazio
+  const [descricao, setDescricao] = useState(transacaoInicial?.descricao ?? "");
+  const [valor, setValor] = useState(
+    transacaoInicial ? String(transacaoInicial.valor) : "",
+  );
+  const [tipo, setTipo] = useState<TipoTransacao>(
+    transacaoInicial?.tipo ?? "despesa",
+  );
+  const [categoria, setCategoria] = useState(
+    transacaoInicial?.categoria ?? categoriasDespesa[0],
+  );
+  const [data, setData] = useState(
+    transacaoInicial?.data.slice(0, 10) ?? hoje(),
+  );
+
+  const listaDoTipo =
     tipo === "despesa" ? categoriasDespesa : categoriasReceita;
+
+  // Se a categoria atual não está na lista (ex.: uma categoria personalizada
+  // que foi excluída), ela entra no fim para não sumir do select
+  const categoriasDoTipo = listaDoTipo.includes(categoria)
+    ? listaDoTipo
+    : [...listaDoTipo, categoria];
 
   function trocarTipo(novoTipo: TipoTransacao) {
     setTipo(novoTipo);
@@ -40,7 +66,8 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
     }
 
     const novaTransacao: Transacao = {
-      id: crypto.randomUUID(),
+      // Editando, mantém o mesmo id: é assim que o banco sabe qual atualizar
+      id: transacaoInicial?.id ?? crypto.randomUUID(),
       descricao: descricao.trim(),
       valor: valorNumerico,
       tipo,
@@ -49,8 +76,11 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
     };
 
     onAdicionar(novaTransacao);
-    setDescricao("");
-    setValor("");
+
+    if (!editando) {
+      setDescricao("");
+      setValor("");
+    }
   }
 
   return (
@@ -62,7 +92,7 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
         adicionarTransacao();
       }}
     >
-      <h3>Nova transação</h3>
+      <h3>{editando ? "Editar transação" : "Nova transação"}</h3>
 
       {/* O <label> em volta liga o texto ao campo: clicar no texto foca o campo */}
       <label className="campo campo-inteiro">
@@ -123,9 +153,20 @@ function TransacaoForm({ categoriasDespesa, onAdicionar }: TransacaoFormProps) {
         </select>
       </label>
 
-      <button type="submit" className="campo-inteiro">
-        Adicionar transação
-      </button>
+      <div className="campo-inteiro transacao-form-botoes">
+        {onCancelar && (
+          <button
+            type="button"
+            className="botao-secundario"
+            onClick={onCancelar}
+          >
+            Cancelar
+          </button>
+        )}
+        <button type="submit">
+          {editando ? "Salvar alterações" : "Adicionar transação"}
+        </button>
+      </div>
     </form>
   );
 }

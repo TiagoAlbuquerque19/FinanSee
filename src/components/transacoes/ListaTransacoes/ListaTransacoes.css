@@ -51,3 +51,21 @@
 .transacao-valor--receita {
   color: var(--cor-receita);
 }
+
+/* Celular: descrição na primeira linha; valor e botões descem para a
+   segunda, para o nome não ficar cortado */
+@media (max-width: 520px) {
+  .transacao {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  .transacao-info {
+    flex-basis: calc(100% - 52px);
+  }
+
+  .transacao-valor {
+    margin-left: 52px;
+    margin-right: auto;
+  }
+}

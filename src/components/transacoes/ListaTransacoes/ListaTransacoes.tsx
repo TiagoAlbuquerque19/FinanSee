@@ -1,7 +1,9 @@
 import type { Transacao } from "../../../types/transacao";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import { formatarData } from "../../../utils/datas";
-import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import EditarTransacao from "../EditarTransacao/EditarTransacao";
 import IconeCategoria from "../../categorias/IconeCategoria/IconeCategoria";
 import "./ListaTransacoes.css";
 
@@ -17,6 +19,9 @@ function ListaTransacoes({
   onExcluir,
   limite,
 }: ListaTransacoesProps) {
+  // A transação que está sendo editada (null = nenhuma janela aberta)
+  const [emEdicao, setEmEdicao] = useState<Transacao | null>(null);
+
   if (transacoes.length === 0) {
     return <p className="texto-vazio">Nenhuma transação encontrada.</p>;
   }
@@ -34,39 +39,58 @@ function ListaTransacoes({
       : transacoesOrdenadas.slice(0, limite);
 
   return (
-    <ul className="lista-transacoes">
-      {transacoesVisiveis.map((transacao) => (
-        <li key={transacao.id} className="transacao">
-          <IconeCategoria
-            categoria={transacao.categoria}
-            tipo={transacao.tipo}
-          />
+    <>
+      <ul className="lista-transacoes">
+        {transacoesVisiveis.map((transacao) => (
+          <li key={transacao.id} className="transacao">
+            <IconeCategoria
+              categoria={transacao.categoria}
+              tipo={transacao.tipo}
+            />
 
-          <div className="transacao-info">
-            <strong>{transacao.descricao}</strong>
-            <span>
-              {transacao.categoria} · {formatarData(transacao.data)}
+            <div className="transacao-info">
+              <strong>{transacao.descricao}</strong>
+              <span>
+                {transacao.categoria} · {formatarData(transacao.data)}
+              </span>
+            </div>
+
+            <span
+              className={`transacao-valor transacao-valor--${transacao.tipo}`}
+            >
+              {transacao.tipo === "despesa" ? "− " : "+ "}
+              {formatarMoeda(transacao.valor)}
             </span>
-          </div>
 
-          <span
-            className={`transacao-valor transacao-valor--${transacao.tipo}`}
-          >
-            {transacao.tipo === "despesa" ? "− " : "+ "}
-            {formatarMoeda(transacao.valor)}
-          </span>
+            <button
+              className="botao-editar"
+              onClick={() => setEmEdicao(transacao)}
+              aria-label={`Editar ${transacao.descricao}`}
+              title="Editar"
+            >
+              <Pencil size={16} aria-hidden="true" />
+            </button>
 
-          <button
-            className="botao-excluir"
-            onClick={() => onExcluir(transacao.id)}
-            aria-label={`Excluir ${transacao.descricao}`}
-            title="Excluir"
-          >
-            <Trash2 size={16} aria-hidden="true" />
-          </button>
-        </li>
-      ))}
-    </ul>
+            <button
+              className="botao-excluir"
+              onClick={() => onExcluir(transacao.id)}
+              aria-label={`Excluir ${transacao.descricao}`}
+              title="Excluir"
+            >
+              <Trash2 size={16} aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* A janela de edição só existe enquanto alguma transação é editada */}
+      {emEdicao && (
+        <EditarTransacao
+          transacao={emEdicao}
+          onFechar={() => setEmEdicao(null)}
+        />
+      )}
+    </>
   );
 }
 
