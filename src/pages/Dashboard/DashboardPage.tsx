@@ -32,6 +32,7 @@ function DashboardPage() {
     cdi,
     saldoInicial,
     salvarSaldoInicial,
+    adicionarMovimento,
   } = useFinancas();
 
   const atual = calcularResumo(transacoesDoMes);
@@ -150,6 +151,8 @@ function DashboardPage() {
           <TransacaoForm
             categoriasDespesa={todasCategoriasDespesa}
             onAdicionar={adicionarTransacao}
+            investimentos={investimentos}
+            onInvestir={adicionarMovimento}
           />
 
           <section className="painel">
@@ -209,6 +212,9 @@ function DashboardPage() {
         </div>
         <ListaTransacoes
           transacoes={transacoesDoMes}
+          movimentos={movimentosInvestimento.filter(
+            (movimento) => movimento.data.slice(0, 7) === mesSelecionado,
+          )}
           onExcluir={excluirTransacao}
           limite={5}
         />

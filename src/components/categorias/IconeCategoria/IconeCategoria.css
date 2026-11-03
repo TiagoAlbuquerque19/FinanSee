@@ -16,3 +16,9 @@
   background: var(--cor-receita-suave);
   color: var(--cor-receita);
 }
+
+/* Dinheiro indo para (ou voltando de) um cofrinho */
+.icone-categoria--investimento {
+  background: color-mix(in srgb, var(--grafico-3) 15%, transparent);
+  color: var(--grafico-3);
+}

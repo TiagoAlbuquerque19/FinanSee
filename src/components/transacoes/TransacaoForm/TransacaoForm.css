@@ -33,3 +33,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.transacao-form-dica,
+.transacao-form-aviso {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.transacao-form-aviso {
+  padding: 10px 0;
+  color: var(--cor-aviso);
+}

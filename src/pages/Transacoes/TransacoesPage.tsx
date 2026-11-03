@@ -15,6 +15,9 @@ function TransacoesPage() {
     setMesSelecionado,
     adicionarTransacao,
     excluirTransacao,
+    investimentos,
+    movimentosInvestimento,
+    adicionarMovimento,
   } = useFinancas();
 
   // Estados dos filtros
@@ -33,8 +36,7 @@ function TransacoesPage() {
       .toLowerCase()
       .includes(busca.trim().toLowerCase());
 
-    const passaNoTipo =
-      tipoFiltro === "todos" || transacao.tipo === tipoFiltro;
+    const passaNoTipo = tipoFiltro === "todos" || transacao.tipo === tipoFiltro;
 
     const passaNaCategoria =
       categoriaFiltro === "todas" || transacao.categoria === categoriaFiltro;
@@ -42,15 +44,46 @@ function TransacoesPage() {
     return passaNaBusca && passaNoTipo && passaNaCategoria;
   });
 
-  // Total do que está aparecendo: receitas somam, despesas subtraem
+  // Dinheiro guardado/retirado dos cofrinhos neste mês. Aparece com o
+  // filtro de tipo "Todos" ou "Investimentos", e só sem filtro de categoria
+  const movimentosFiltrados = movimentosInvestimento.filter((movimento) => {
+    if (movimento.tipo === "saldo") {
+      return false;
+    }
+
+    const nome =
+      investimentos.find((item) => item.id === movimento.investimentoId)
+        ?.nome ?? "";
+
+    return (
+      movimento.data.slice(0, 7) === mesSelecionado &&
+      (tipoFiltro === "todos" || tipoFiltro === "investimento") &&
+      categoriaFiltro === "todas" &&
+      nome.toLowerCase().includes(busca.trim().toLowerCase())
+    );
+  });
+
+  // Com o filtro "Investimentos", as transações comuns somem da lista
+  const transacoesDaLista =
+    tipoFiltro === "investimento" ? [] : transacoesFiltradas;
+
+  // Total do que está aparecendo: receitas somam, despesas subtraem;
+  // guardar no cofrinho subtrai e retirar soma (como no saldo disponível)
   let totalFiltrado = 0;
 
-  for (const transacao of transacoesFiltradas) {
+  for (const transacao of transacoesDaLista) {
     if (transacao.tipo === "receita") {
       totalFiltrado = totalFiltrado + transacao.valor;
     } else {
       totalFiltrado = totalFiltrado - transacao.valor;
     }
+  }
+
+  for (const movimento of movimentosFiltrados) {
+    totalFiltrado =
+      movimento.tipo === "aporte"
+        ? totalFiltrado - movimento.valor
+        : totalFiltrado + movimento.valor;
   }
 
   return (
@@ -64,6 +97,8 @@ function TransacoesPage() {
         <TransacaoForm
           categoriasDespesa={todasCategoriasDespesa}
           onAdicionar={adicionarTransacao}
+          investimentos={investimentos}
+          onInvestir={adicionarMovimento}
         />
 
         <section className="painel">
@@ -87,6 +122,7 @@ function TransacoesPage() {
                 <option value="todos">Todos</option>
                 <option value="despesa">Despesas</option>
                 <option value="receita">Receitas</option>
+                <option value="investimento">Investimentos</option>
               </select>
             </label>
 
@@ -107,12 +143,13 @@ function TransacoesPage() {
           </div>
 
           <p className="resumo-filtro">
-            {transacoesFiltradas.length} transação(ões) · total{" "}
-            <strong>{formatarMoeda(totalFiltrado)}</strong>
+            {transacoesDaLista.length + movimentosFiltrados.length} item(ns) ·
+            total <strong>{formatarMoeda(totalFiltrado)}</strong>
           </p>
 
           <ListaTransacoes
-            transacoes={transacoesFiltradas}
+            transacoes={transacoesDaLista}
+            movimentos={movimentosFiltrados}
             onExcluir={excluirTransacao}
           />
         </section>
