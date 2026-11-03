@@ -11,6 +11,8 @@ import ResumoMetas from "../../components/metas/ResumoMetas/ResumoMetas";
 import { calcularResumo } from "../../utils/calcularResumo";
 import { resumoPorMes } from "../../utils/resumoPorMes";
 import { investidoNoMes } from "../../utils/investimentos";
+import { saldoAcumuladoAte } from "../../utils/saldoAcumulado";
+import { formatarMoeda } from "../../utils/formatarMoeda";
 import { mudarMes, nomeDoMes } from "../../utils/datas";
 import { useFinancas } from "../../hooks/useFinancas";
 
@@ -28,6 +30,8 @@ function DashboardPage() {
     investimentos,
     movimentosInvestimento,
     cdi,
+    saldoInicial,
+    salvarSaldoInicial,
   } = useFinancas();
 
   const atual = calcularResumo(transacoesDoMes);
@@ -44,10 +48,43 @@ function DashboardPage() {
   );
   const anterior = calcularResumo(transacoesMesAnterior);
   const investidoAnterior = investidoNoMes(movimentosInvestimento, mesAnterior);
-  const saldoAnterior = anterior.saldo - investidoAnterior;
   const temMesAnterior =
     transacoesMesAnterior.length > 0 || investidoAnterior !== 0;
   const nomeMesAnterior = nomeDoMes(mesAnterior);
+
+  // Saldo disponível: o que sobrou dos meses anteriores + o resultado deste
+  const sobrouDoAnterior = saldoAcumuladoAte(
+    mesAnterior,
+    transacoes,
+    movimentosInvestimento,
+    saldoInicial,
+  );
+  const saldoDisponivel = sobrouDoAnterior + saldoAtual;
+
+  function perguntarSaldoInicial() {
+    const resposta = window.prompt(
+      "Quanto você tinha na conta antes de começar a lançar no FinanSee? (ex.: 1500,00)",
+      saldoInicial === 0 ? "" : String(saldoInicial).replace(".", ","),
+    );
+
+    if (resposta === null) {
+      return; // clicou em Cancelar
+    }
+
+    // Aceita "1.500,00", "1500,00" e "1500.00"
+    const texto = resposta.trim();
+    const normalizado = texto.includes(",")
+      ? texto.replace(/\./g, "").replace(",", ".")
+      : texto;
+    const numero = Number(normalizado === "" ? "0" : normalizado);
+
+    if (Number.isNaN(numero)) {
+      alert("Digite só o valor, por exemplo 1500,00");
+      return;
+    }
+
+    salvarSaldoInicial(numero);
+  }
 
   return (
     <>
@@ -58,12 +95,33 @@ function DashboardPage() {
 
       <div className="cards">
         <CardFinanceiro
-          titulo="Saldo do mês"
-          valor={saldoAtual}
+          titulo="Saldo disponível"
+          valor={saldoDisponivel}
           variante="saldo"
-          valorAnterior={temMesAnterior ? saldoAnterior : null}
-          nomeMesAnterior={nomeMesAnterior}
-        />
+        >
+          <div className="card-financeiro-detalhes">
+            <span>
+              Este mês:{" "}
+              <strong
+                className={
+                  saldoAtual < 0 ? "comparacao-ruim" : "comparacao-boa"
+                }
+              >
+                {saldoAtual > 0 ? "+ " : ""}
+                {formatarMoeda(saldoAtual)}
+              </strong>
+            </span>
+            <span>
+              Sobrou de {nomeMesAnterior}:{" "}
+              <strong>{formatarMoeda(sobrouDoAnterior)}</strong>
+            </span>
+            <button className="botao-link" onClick={perguntarSaldoInicial}>
+              {saldoInicial === 0
+                ? "Já tinha dinheiro antes? Informe o saldo inicial"
+                : `Saldo inicial: ${formatarMoeda(saldoInicial)} · alterar`}
+            </button>
+          </div>
+        </CardFinanceiro>
         <CardFinanceiro
           titulo="Receitas"
           valor={atual.receitas}

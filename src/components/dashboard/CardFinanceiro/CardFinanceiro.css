@@ -78,3 +78,45 @@
   background: color-mix(in srgb, var(--grafico-3) 15%, transparent);
   color: var(--grafico-3);
 }
+
+/* Linhas extras do card de saldo ("Este mês", "Sobrou de...") */
+.card-financeiro-detalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.card-financeiro-detalhes strong {
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+/* Botão com cara de link (definido aqui porque esta página não carrega
+   o CSS dos investimentos) */
+.card-financeiro-detalhes .botao-link {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--cor-primaria);
+}
+
+.card-financeiro-detalhes .botao-link:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+/* Mais específico que a regra acima, para o verde/vermelho valer */
+.card-financeiro-detalhes strong.comparacao-boa {
+  color: var(--cor-receita);
+}
+
+.card-financeiro-detalhes strong.comparacao-ruim {
+  color: var(--cor-despesa);
+}

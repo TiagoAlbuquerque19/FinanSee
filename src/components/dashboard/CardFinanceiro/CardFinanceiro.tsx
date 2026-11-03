@@ -6,6 +6,7 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { formatarMoeda } from "../../../utils/formatarMoeda";
 import "./CardFinanceiro.css";
 
@@ -16,8 +17,10 @@ interface CardFinanceiroProps {
   valor: number;
   variante: Variante;
   // null quando o mês anterior não tem nenhuma transação
-  valorAnterior: number | null;
-  nomeMesAnterior: string;
+  valorAnterior?: number | null;
+  nomeMesAnterior?: string;
+  // Opcional: um conteúdo próprio no lugar da comparação com o mês anterior
+  children?: ReactNode;
 }
 
 // Um ícone para cada variante
@@ -32,8 +35,9 @@ function CardFinanceiro({
   titulo,
   valor,
   variante,
-  valorAnterior,
-  nomeMesAnterior,
+  valorAnterior = null,
+  nomeMesAnterior = "",
+  children,
 }: CardFinanceiroProps) {
   const Icone = icones[variante];
 
@@ -53,12 +57,15 @@ function CardFinanceiro({
 
       <strong className="card-financeiro-valor">{formatarMoeda(valor)}</strong>
 
-      <Comparacao
-        diferenca={valorAnterior === null ? null : valor - valorAnterior}
-        // Para despesas, aumentar é ruim; para receitas e saldo, é bom
-        subirEhBom={variante !== "despesa"}
-        nomeMesAnterior={nomeMesAnterior}
-      />
+      {/* ?? : se veio um conteúdo próprio, mostra ele; senão, a comparação */}
+      {children ?? (
+        <Comparacao
+          diferenca={valorAnterior === null ? null : valor - valorAnterior}
+          // Para despesas, aumentar é ruim; para receitas e saldo, é bom
+          subirEhBom={variante !== "despesa"}
+          nomeMesAnterior={nomeMesAnterior}
+        />
+      )}
     </div>
   );
 }

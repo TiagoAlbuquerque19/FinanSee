@@ -49,6 +49,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     cdiAnual: null,
     atualizadoEm: null,
   });
+  const [saldoInicial, setSaldoInicial] = useState(0);
   const [faltaMigracaoInvestimentos, setFaltaMigracaoInvestimentos] =
     useState(false);
   const [mesSelecionado, setMesSelecionado] = useState(mesAtual());
@@ -70,6 +71,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
       setInvestimentos(dados.investimentos);
       setMovimentosInvestimento(dados.movimentos);
       setCdi(dados.cdi);
+      setSaldoInicial(dados.saldoInicial);
       setFaltaMigracaoInvestimentos(dados.faltaMigracaoInvestimentos);
     });
   }
@@ -318,6 +320,15 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     }
   }
 
+  async function salvarSaldoInicial(valor: number) {
+    try {
+      await banco.salvarSaldoInicial(valor);
+      setSaldoInicial(valor);
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
   async function salvarCdi(cdiAnual: number) {
     try {
       await banco.salvarCdi(cdiAnual, hoje());
@@ -375,6 +386,8 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         adicionarMovimento,
         excluirMovimento,
         salvarCdi,
+        saldoInicial,
+        salvarSaldoInicial,
         quantidadeDadosLocais,
         importarDadosLocais,
         descartarDadosLocais,

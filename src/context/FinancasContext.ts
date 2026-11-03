@@ -46,6 +46,9 @@ export interface FinancasContextValor {
   adicionarMovimento: (movimento: MovimentoInvestimento) => Promise<void>;
   excluirMovimento: (id: string) => Promise<void>;
   salvarCdi: (cdiAnual: number) => Promise<void>;
+  // Quanto já tinha na conta antes de começar a usar o FinanSee
+  saldoInicial: number;
+  salvarSaldoInicial: (valor: number) => Promise<void>;
   // Quantos itens antigos (salvos só neste navegador) ainda dá para importar
   quantidadeDadosLocais: number;
   importarDadosLocais: () => Promise<void>;
