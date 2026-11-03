@@ -7,4 +7,6 @@ export interface Transacao {
   tipo: TipoTransacao;
   categoria: string;
   data: string;
+  // Quando foi lançada (vem do banco). Desempata a ordem no mesmo dia
+  criadoEm?: string;
 }

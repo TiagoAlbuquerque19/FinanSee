@@ -43,6 +43,7 @@ interface LinhaTransacao {
   tipo: TipoTransacao;
   categoria: string;
   data: string;
+  criado_em?: string;
 }
 
 interface LinhaMeta {
@@ -77,6 +78,7 @@ interface LinhaMovimento {
   tipo: TipoMovimento;
   valor: number;
   data: string;
+  criado_em?: string;
 }
 
 interface LinhaConfiguracao {
@@ -88,7 +90,15 @@ interface LinhaConfiguracao {
 // ---------- Conversões banco → app ----------
 
 function deLinhaTransacao(linha: LinhaTransacao): Transacao {
-  return { ...linha, valor: Number(linha.valor) };
+  return {
+    id: linha.id,
+    descricao: linha.descricao,
+    valor: Number(linha.valor),
+    tipo: linha.tipo,
+    categoria: linha.categoria,
+    data: linha.data,
+    criadoEm: linha.criado_em,
+  };
 }
 
 function deLinhaMeta(linha: LinhaMeta): Meta {
@@ -125,6 +135,7 @@ function deLinhaMovimento(linha: LinhaMovimento): MovimentoInvestimento {
     tipo: linha.tipo,
     valor: Number(linha.valor),
     data: linha.data,
+    criadoEm: linha.criado_em,
   };
 }
 
