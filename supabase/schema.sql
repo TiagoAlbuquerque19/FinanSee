@@ -125,7 +125,9 @@ create table public.movimentos_investimento (
 create table public.configuracoes (
   user_id uuid primary key default auth.uid() references auth.users (id) on delete cascade,
   cdi_anual numeric(6, 2),
-  cdi_atualizado_em date
+  cdi_atualizado_em date,
+  -- Quanto já tinha na conta antes de usar o FinanSee (veja a migração 004)
+  saldo_inicial numeric(12, 2) not null default 0
 );
 
 create index on public.investimentos (user_id);

@@ -82,6 +82,7 @@ interface LinhaMovimento {
 interface LinhaConfiguracao {
   cdi_anual: number | null;
   cdi_atualizado_em: string | null;
+  saldo_inicial?: number; // não existe antes do SQL 004
 }
 
 // ---------- Conversões banco → app ----------
@@ -178,10 +179,9 @@ export async function buscarDados() {
     supabase.from("investimentos").select("*").order("criado_em"),
     supabase.from("movimentos_investimento").select("*").order("criado_em"),
     // maybeSingle: no máximo uma linha (ou nenhuma, se ainda não salvou)
-    supabase
-      .from("configuracoes")
-      .select("cdi_anual, cdi_atualizado_em")
-      .maybeSingle(),
+    // select("*"): se uma coluna nova ainda não existe (SQL não rodado),
+    // ela só não vem, em vez de dar erro
+    supabase.from("configuracoes").select("*").maybeSingle(),
   ]);
 
   verificar(transacoes.error);
@@ -222,6 +222,7 @@ export async function buscarDados() {
           : Number(linhaConfiguracao.cdi_anual),
       atualizadoEm: linhaConfiguracao?.cdi_atualizado_em ?? null,
     } as ConfiguracaoCdi,
+    saldoInicial: Number(linhaConfiguracao?.saldo_inicial ?? 0),
   };
 }
 
@@ -383,6 +384,20 @@ export async function salvarCdi(cdiAnual: number, data: string) {
       { cdi_anual: cdiAnual, cdi_atualizado_em: data },
       { onConflict: "user_id" },
     );
+  verificar(error);
+}
+
+export async function salvarSaldoInicial(valor: number) {
+  const { error } = await supabase
+    .from("configuracoes")
+    .upsert({ saldo_inicial: valor }, { onConflict: "user_id" });
+
+  if (error && error.message.includes("saldo_inicial")) {
+    throw new Error(
+      "Falta rodar o arquivo supabase/migracoes/004_saldo_inicial.sql no Supabase.",
+    );
+  }
+
   verificar(error);
 }
 
