@@ -8,7 +8,11 @@ import {
   YAxis,
 } from "recharts";
 import type { ResumoDoMes } from "../../../utils/resumoPorMes";
-import { corDespesas, corReceitas } from "../../../data/coresGraficos";
+import {
+  corDespesas,
+  corInvestido,
+  corReceitas,
+} from "../../../data/coresGraficos";
 import { formatarValorCurto } from "../../../utils/formatarValorCurto";
 import TooltipGrafico from "../TooltipGrafico/TooltipGrafico";
 import "../graficos.css";
@@ -17,7 +21,7 @@ interface GraficoMensalProps {
   dados: ResumoDoMes[];
 }
 
-// Barras de receitas e despesas lado a lado, um grupo por mês
+// Barras de receitas, despesas e investido lado a lado, um grupo por mês
 function GraficoMensal({ dados }: GraficoMensalProps) {
   return (
     <div>
@@ -30,6 +34,10 @@ function GraficoMensal({ dados }: GraficoMensalProps) {
         <span>
           <span className="marcador-cor" style={{ background: corDespesas }} />
           Despesas
+        </span>
+        <span>
+          <span className="marcador-cor" style={{ background: corInvestido }} />
+          Investido
         </span>
       </div>
 
@@ -71,6 +79,13 @@ function GraficoMensal({ dados }: GraficoMensalProps) {
             dataKey="despesas"
             name="Despesas"
             fill={corDespesas}
+            radius={[4, 4, 0, 0]}
+            maxBarSize={24}
+          />
+          <Bar
+            dataKey="investido"
+            name="Investido"
+            fill={corInvestido}
             radius={[4, 4, 0, 0]}
             maxBarSize={24}
           />

@@ -12,11 +12,16 @@ import "./RelatoriosPage.css";
 const periodos = [3, 6, 12];
 
 function RelatoriosPage() {
-  const { transacoes } = useFinancas();
+  const { transacoes, movimentosInvestimento } = useFinancas();
   const [quantidadeMeses, setQuantidadeMeses] = useState(6);
 
   // Relatórios sempre terminam no mês atual
-  const meses = resumoPorMes(transacoes, mesAtual(), quantidadeMeses);
+  const meses = resumoPorMes(
+    transacoes,
+    mesAtual(),
+    quantidadeMeses,
+    movimentosInvestimento,
+  );
 
   // Só as transações que estão dentro do período escolhido
   const primeiroMes = meses[0].mes;
@@ -26,10 +31,12 @@ function RelatoriosPage() {
 
   let totalReceitas = 0;
   let totalDespesas = 0;
+  let totalInvestido = 0;
 
   for (const mes of meses) {
     totalReceitas = totalReceitas + mes.receitas;
     totalDespesas = totalDespesas + mes.despesas;
+    totalInvestido = totalInvestido + mes.investido;
   }
 
   const mediaDespesas = totalDespesas / quantidadeMeses;
@@ -66,13 +73,17 @@ function RelatoriosPage() {
           <strong>{formatarMoeda(totalDespesas)}</strong>
         </div>
         <div className="painel">
+          <span>Investido no período</span>
+          <strong>{formatarMoeda(totalInvestido)}</strong>
+        </div>
+        <div className="painel">
           <span>Média de gastos por mês</span>
           <strong>{formatarMoeda(mediaDespesas)}</strong>
         </div>
       </div>
 
       <section className="painel">
-        <h3>Receitas e despesas por mês</h3>
+        <h3>Receitas, despesas e investimentos por mês</h3>
         <GraficoMensal dados={meses} />
       </section>
 
@@ -98,7 +109,8 @@ function RelatoriosPage() {
                 <th>Mês</th>
                 <th>Receitas</th>
                 <th>Despesas</th>
-                <th>Saldo</th>
+                <th>Investido</th>
+                <th>Sobrou</th>
               </tr>
             </thead>
             <tbody>
@@ -108,6 +120,7 @@ function RelatoriosPage() {
                   <td className="tabela-mes">{mes.titulo}</td>
                   <td>{formatarMoeda(mes.receitas)}</td>
                   <td>{formatarMoeda(mes.despesas)}</td>
+                  <td>{formatarMoeda(mes.investido)}</td>
                   <td className={mes.saldo < 0 ? "valor-negativo" : ""}>
                     {formatarMoeda(mes.saldo)}
                   </td>

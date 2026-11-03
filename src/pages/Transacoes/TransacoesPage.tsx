@@ -46,11 +46,8 @@ function TransacoesPage() {
 
   // Dinheiro guardado/retirado dos cofrinhos neste mês. Aparece com o
   // filtro de tipo "Todos" ou "Investimentos", e só sem filtro de categoria
+  // (inclui os saldos atualizados, que aparecem só como informação)
   const movimentosFiltrados = movimentosInvestimento.filter((movimento) => {
-    if (movimento.tipo === "saldo") {
-      return false;
-    }
-
     const nome =
       investimentos.find((item) => item.id === movimento.investimentoId)
         ?.nome ?? "";
@@ -80,10 +77,12 @@ function TransacoesPage() {
   }
 
   for (const movimento of movimentosFiltrados) {
-    totalFiltrado =
-      movimento.tipo === "aporte"
-        ? totalFiltrado - movimento.valor
-        : totalFiltrado + movimento.valor;
+    if (movimento.tipo === "aporte") {
+      totalFiltrado = totalFiltrado - movimento.valor;
+    } else if (movimento.tipo === "resgate") {
+      totalFiltrado = totalFiltrado + movimento.valor;
+    }
+    // "saldo" não muda o total: é só o valor conferido no banco
   }
 
   return (
@@ -150,6 +149,7 @@ function TransacoesPage() {
           <ListaTransacoes
             transacoes={transacoesDaLista}
             movimentos={movimentosFiltrados}
+            mostrarSaldos
             onExcluir={excluirTransacao}
           />
         </section>
