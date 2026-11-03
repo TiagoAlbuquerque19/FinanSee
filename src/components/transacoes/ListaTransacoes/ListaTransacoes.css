@@ -69,3 +69,9 @@
     margin-right: auto;
   }
 }
+
+/* Mesmo tamanho do botão de editar, para os valores ficarem alinhados */
+.transacao-espaco-botao {
+  width: 32px;
+  flex-shrink: 0;
+}
