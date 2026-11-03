@@ -21,6 +21,7 @@ export interface MovimentoInvestimento {
   tipo: TipoMovimento;
   valor: number;
   data: string; // "AAAA-MM-DD"
+  criadoEm?: string; // quando foi lançado (vem do banco)
 }
 
 export interface ConfiguracaoCdi {

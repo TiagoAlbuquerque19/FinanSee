@@ -125,6 +125,8 @@ function TransacaoForm({
     const novaTransacao: Transacao = {
       // Editando, mantém o mesmo id: é assim que o banco sabe qual atualizar
       id: transacaoInicial?.id ?? crypto.randomUUID(),
+      // Ao editar, mantém a hora do lançamento (e a posição na lista)
+      criadoEm: transacaoInicial?.criadoEm,
       descricao: descricao.trim(),
       valor: valorNumerico,
       tipo,

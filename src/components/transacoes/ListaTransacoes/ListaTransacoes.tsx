@@ -23,8 +23,18 @@ interface ListaTransacoesProps {
 // A lista mistura dois tipos de item. O campo "origem" diz qual é qual,
 // e o TypeScript entende qual dos dois formatos cada item tem
 type Item =
-  | { origem: "transacao"; data: string; transacao: Transacao }
-  | { origem: "cofrinho"; data: string; movimento: MovimentoInvestimento };
+  | {
+      origem: "transacao";
+      data: string;
+      criadoEm?: string;
+      transacao: Transacao;
+    }
+  | {
+      origem: "cofrinho";
+      data: string;
+      criadoEm?: string;
+      movimento: MovimentoInvestimento;
+    };
 
 function ListaTransacoes({
   transacoes,
@@ -48,11 +58,13 @@ function ListaTransacoes({
     ...transacoes.map((transacao) => ({
       origem: "transacao" as const,
       data: transacao.data,
+      criadoEm: transacao.criadoEm,
       transacao,
     })),
     ...movimentosVisiveis.map((movimento) => ({
       origem: "cofrinho" as const,
       data: movimento.data,
+      criadoEm: movimento.criadoEm,
       movimento,
     })),
   ];
@@ -61,8 +73,18 @@ function ListaTransacoes({
     return <p className="texto-vazio">Nenhuma transação encontrada.</p>;
   }
 
-  // Mais recentes primeiro
-  itens.sort((a, b) => b.data.localeCompare(a.data));
+  // Mais recentes primeiro. No mesmo dia, vale a hora em que foi lançado:
+  // assim o que você guardou depois do salário aparece logo acima dele.
+  // Recém-criado ainda não tem hora do banco, então conta como o mais novo
+  itens.sort((a, b) => {
+    const porData = b.data.localeCompare(a.data);
+
+    if (porData !== 0) {
+      return porData;
+    }
+
+    return (b.criadoEm ?? "9999").localeCompare(a.criadoEm ?? "9999");
+  });
 
   // Com limite, mostra só as primeiras (as mais recentes)
   const itensVisiveis = limite === undefined ? itens : itens.slice(0, limite);
