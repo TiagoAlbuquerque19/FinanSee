@@ -47,7 +47,7 @@ function TransacaoForm({
   const [cofrinhoId, setCofrinhoId] = useState(investimentos?.[0]?.id ?? "");
 
   // A opção "Investimento" só aparece se quem usa o formulário passou os
-  // cofrinhos (na edição de uma transação ela não aparece)
+  // cofrinhos. Na edição, ela converte a transação num aporte
   const podeInvestir = investimentos !== undefined && onInvestir !== undefined;
   const [categoria, setCategoria] = useState(
     transacaoInicial?.categoria ?? categoriasDespesa[0],
@@ -240,8 +240,9 @@ function TransacaoForm({
 
       {tipo === "investimento" && (
         <p className="campo-inteiro transacao-form-dica">
-          Vai para o cofrinho: sai do saldo disponível, mas não conta como
-          despesa.
+          {editando
+            ? "Esta transação será trocada por um aporte no cofrinho, com a mesma data e o mesmo valor."
+            : "Vai para o cofrinho: sai do saldo disponível, mas não conta como despesa."}
         </p>
       )}
 
@@ -256,10 +257,10 @@ function TransacaoForm({
           </button>
         )}
         <button type="submit">
-          {editando
-            ? "Salvar alterações"
-            : tipo === "investimento"
-              ? "Guardar no cofrinho"
+          {tipo === "investimento"
+            ? "Guardar no cofrinho"
+            : editando
+              ? "Salvar alterações"
               : "Adicionar transação"}
         </button>
       </div>

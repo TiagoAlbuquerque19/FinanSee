@@ -17,7 +17,7 @@ interface GraficoSaldoProps {
   dados: ResumoDoMes[];
 }
 
-// Linha com o saldo (receitas − despesas) de cada mês.
+// Linha com o saldo (receitas − despesas − investido) de cada mês.
 // Acima da linha do zero, sobrou dinheiro; abaixo, faltou.
 function GraficoSaldo({ dados }: GraficoSaldoProps) {
   return (

@@ -1,4 +1,6 @@
 import type { Transacao } from "../types/transacao";
+import type { MovimentoInvestimento } from "../types/investimento";
+import { investidoNoMes } from "./investimentos";
 import { calcularResumo } from "./calcularResumo";
 import { formatarMes, mudarMes } from "./datas";
 
@@ -8,7 +10,8 @@ export interface ResumoDoMes {
   titulo: string; // "outubro de 2026" (para o tooltip)
   receitas: number;
   despesas: number;
-  saldo: number;
+  investido: number; // guardado nos cofrinhos − retirado deles
+  saldo: number; // o que sobrou: receitas − despesas − investido
 }
 
 // Monta o resumo dos últimos "quantidade" meses, terminando em mesFinal.
@@ -17,6 +20,8 @@ export function resumoPorMes(
   transacoes: Transacao[],
   mesFinal: string,
   quantidade: number,
+  // Opcional: aportes e resgates dos cofrinhos
+  movimentos: MovimentoInvestimento[] = [],
 ): ResumoDoMes[] {
   const meses: ResumoDoMes[] = [];
 
@@ -30,11 +35,17 @@ export function resumoPorMes(
 
     const titulo = formatarMes(mes);
 
+    const { receitas, despesas } = calcularResumo(transacoesDoMes);
+    const investido = investidoNoMes(movimentos, mes);
+
     meses.push({
       mes,
       rotulo: titulo.slice(0, 3), // "outubro de 2026" → "out"
       titulo,
-      ...calcularResumo(transacoesDoMes),
+      receitas,
+      despesas,
+      investido,
+      saldo: receitas - despesas - investido,
     });
   }
 

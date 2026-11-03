@@ -21,3 +21,4 @@ export function corDaCategoria(categoria: string): string {
 
 export const corReceitas = "var(--grafico-1)";
 export const corDespesas = "var(--grafico-2)";
+export const corInvestido = "var(--grafico-3)";

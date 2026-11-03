@@ -200,7 +200,14 @@ function DashboardPage() {
 
       <section className="painel">
         <h3>Receitas e despesas · últimos 6 meses</h3>
-        <GraficoMensal dados={resumoPorMes(transacoes, mesSelecionado, 6)} />
+        <GraficoMensal
+          dados={resumoPorMes(
+            transacoes,
+            mesSelecionado,
+            6,
+            movimentosInvestimento,
+          )}
+        />
       </section>
 
       <section className="painel">

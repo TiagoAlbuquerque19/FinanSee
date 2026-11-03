@@ -16,6 +16,8 @@ interface ListaTransacoesProps {
   limite?: number;
   // Opcional: dinheiro guardado/retirado dos cofrinhos, mostrado junto
   movimentos?: MovimentoInvestimento[];
+  // Mostrar também quando o saldo de um cofrinho foi atualizado
+  mostrarSaldos?: boolean;
 }
 
 // A lista mistura dois tipos de item. O campo "origem" diz qual é qual,
@@ -29,15 +31,17 @@ function ListaTransacoes({
   onExcluir,
   limite,
   movimentos = [],
+  mostrarSaldos = false,
 }: ListaTransacoesProps) {
   const { investimentos, excluirMovimento } = useFinancas();
 
   // A transação que está sendo editada (null = nenhuma janela aberta)
   const [emEdicao, setEmEdicao] = useState<Transacao | null>(null);
 
-  // Só aportes e resgates: o "saldo conferido" não é dinheiro entrando ou saindo
-  const movimentosDeDinheiro = movimentos.filter(
-    (movimento) => movimento.tipo !== "saldo",
+  // O "saldo conferido" não é dinheiro entrando ou saindo: só aparece
+  // quando pedido (na página de Transações), e nunca entra nos totais
+  const movimentosVisiveis = movimentos.filter(
+    (movimento) => mostrarSaldos || movimento.tipo !== "saldo",
   );
 
   const itens: Item[] = [
@@ -46,7 +50,7 @@ function ListaTransacoes({
       data: transacao.data,
       transacao,
     })),
-    ...movimentosDeDinheiro.map((movimento) => ({
+    ...movimentosVisiveis.map((movimento) => ({
       origem: "cofrinho" as const,
       data: movimento.data,
       movimento,
@@ -74,10 +78,13 @@ function ListaTransacoes({
           if (item.origem === "cofrinho") {
             const { movimento } = item;
             const nome = nomeDoCofrinho(movimento.investimentoId);
-            const titulo =
-              movimento.tipo === "aporte"
-                ? `Guardou em ${nome}`
-                : `Retirou de ${nome}`;
+            const titulos = {
+              aporte: `Guardou em ${nome}`,
+              resgate: `Retirou de ${nome}`,
+              saldo: `Saldo de ${nome} atualizado`,
+            };
+            const titulo = titulos[movimento.tipo];
+            const setas = { aporte: "→ ", resgate: "← ", saldo: "" };
 
             return (
               <li key={movimento.id} className="transacao">
@@ -90,9 +97,17 @@ function ListaTransacoes({
                   <span>Investimento · {formatarData(movimento.data)}</span>
                 </div>
 
-                {/* Não é despesa nem receita: aparece na cor normal */}
-                <span className="transacao-valor">
-                  {movimento.tipo === "aporte" ? "→ " : "← "}
+                {/* Não é despesa nem receita: aparece na cor normal.
+                    O saldo atualizado fica mais apagado: é só informação */}
+                <span
+                  className={`transacao-valor${movimento.tipo === "saldo" ? " transacao-valor--saldo" : ""}`}
+                  title={
+                    movimento.tipo === "saldo"
+                      ? "Quanto havia no cofrinho nesse dia (não entra no total)"
+                      : undefined
+                  }
+                >
+                  {setas[movimento.tipo]}
                   {formatarMoeda(movimento.valor)}
                 </span>
 

@@ -48,6 +48,12 @@
 
 /* Receitas em verde; despesas na cor normal do texto, para a lista não
    ficar toda vermelha (o sinal "−" já mostra que é saída) */
+/* Saldo conferido do cofrinho: só informação, fica mais apagado */
+.transacao-valor--saldo {
+  color: var(--cor-texto-suave);
+  font-weight: 500;
+}
+
 .transacao-valor--receita {
   color: var(--cor-receita);
 }

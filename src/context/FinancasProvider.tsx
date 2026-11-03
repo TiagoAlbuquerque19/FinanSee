@@ -142,6 +142,25 @@ function FinancasProvider({ children }: FinancasProviderProps) {
     }
   }
 
+  async function converterEmInvestimento(
+    transacaoId: string,
+    movimento: MovimentoInvestimento,
+  ) {
+    try {
+      // Primeiro cria o aporte; só se der certo apaga a transação antiga.
+      // Assim, se a internet cair no meio, o valor não some
+      await banco.inserirMovimento(movimento);
+      setMovimentosInvestimento((lista) => [...lista, movimento]);
+
+      await banco.apagarTransacao(transacaoId);
+      setTransacoes((lista) =>
+        lista.filter((transacao) => transacao.id !== transacaoId),
+      );
+    } catch (erro) {
+      avisarErro(erro);
+    }
+  }
+
   async function excluirTransacao(id: string) {
     try {
       await banco.apagarTransacao(id);
@@ -364,6 +383,7 @@ function FinancasProvider({ children }: FinancasProviderProps) {
         setMesSelecionado,
         adicionarTransacao,
         editarTransacao,
+        converterEmInvestimento,
         excluirTransacao,
         criarCategoria,
         excluirCategoria,
