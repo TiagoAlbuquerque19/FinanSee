@@ -1,5 +1,7 @@
 # FinanSee
 
+[![CI](https://github.com/TiagoAlbuquerque19/FinanSee/actions/workflows/ci.yml/badge.svg)](https://github.com/TiagoAlbuquerque19/FinanSee/actions/workflows/ci.yml)
+
 Controle de finanças pessoais: gastos e receitas por mês, categorias, metas de economia, lembretes de contas e gráficos. Cada pessoa tem a própria conta.
 
 ## Funcionalidades
@@ -9,6 +11,7 @@ Controle de finanças pessoais: gastos e receitas por mês, categorias, metas de
 - **Categorias**: categorias prontas e personalizadas, com o total de cada uma no mês
 - **Metas**: quanto falta e quanto guardar por mês para chegar no prazo
 - **Lembretes**: contas a pagar (únicas ou mensais), avisos de atraso e vencimento, com registro da despesa ao marcar como paga
+- **Investimentos**: cofrinhos que rendem pelo % do CDI, com estimativa diária, imposto de renda e comparação com o saldo real do banco
 - **Relatórios**: 3, 6 ou 12 meses, com barras, evolução do saldo, categorias e tabela mês a mês
 - **Login e cadastro**: os dados ficam na nuvem, e cada usuário vê só os próprios
 - **Tema claro e escuro**, e layout adaptado para celular
@@ -48,12 +51,23 @@ Controle de finanças pessoais: gastos e receitas por mês, categorias, metas de
 
 ## Comandos
 
-| Comando           | O que faz                               |
-| ----------------- | --------------------------------------- |
-| `npm run dev`     | Roda o site em modo de desenvolvimento  |
-| `npm run build`   | Confere os tipos e gera a versão final  |
-| `npm run lint`    | Procura problemas no código             |
-| `npm run preview` | Abre a versão final gerada pelo `build` |
+| Comando                | O que faz                                   |
+| ---------------------- | ------------------------------------------- |
+| `npm run dev`          | Roda o site em modo de desenvolvimento      |
+| `npm run build`        | Confere os tipos e gera a versão final      |
+| `npm run preview`      | Abre a versão final gerada pelo `build`     |
+| `npm test`             | Roda os testes automatizados                |
+| `npm run test:watch`   | Roda os testes de novo a cada arquivo salvo |
+| `npm run lint`         | Procura problemas no código                 |
+| `npm run typecheck`    | Confere os tipos do TypeScript              |
+| `npm run format`       | Formata todo o código no padrão do projeto  |
+| `npm run format:check` | Só confere se a formatação está certa       |
+
+## Qualidade
+
+- **Testes** com [Vitest](https://vitest.dev): os cálculos que mexem com dinheiro (rendimento dos cofrinhos, imposto de renda, saldo entre meses, metas e lembretes) têm testes em `src/utils/*.test.ts`.
+- **Formatação** com [Prettier](https://prettier.io) e **lint** com [oxlint](https://oxc.rs).
+- **CI** com GitHub Actions: todo pull request roda formatação, lint, tipos, testes e build. Se algo falhar, aparece um ❌ no PR antes do merge.
 
 ## Estrutura das pastas
 
