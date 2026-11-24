@@ -3,7 +3,8 @@ import { useTema } from "../../hooks/useTema";
 
 function BotaoTema() {
   const { tema, alternarTema } = useTema();
-  const textoBotao = tema === "claro" ? "Ativar tema escuro" : "Ativar tema claro";
+  const textoBotao =
+    tema === "claro" ? "Ativar tema escuro" : "Ativar tema claro";
 
   return (
     <button

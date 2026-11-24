@@ -48,12 +48,12 @@ Controle de finanças pessoais: gastos e receitas por mês, categorias, metas de
 
 ## Comandos
 
-| Comando           | O que faz                                   |
-| ----------------- | ------------------------------------------- |
-| `npm run dev`     | Roda o site em modo de desenvolvimento      |
-| `npm run build`   | Confere os tipos e gera a versão final      |
-| `npm run lint`    | Procura problemas no código                 |
-| `npm run preview` | Abre a versão final gerada pelo `build`     |
+| Comando           | O que faz                               |
+| ----------------- | --------------------------------------- |
+| `npm run dev`     | Roda o site em modo de desenvolvimento  |
+| `npm run build`   | Confere os tipos e gera a versão final  |
+| `npm run lint`    | Procura problemas no código             |
+| `npm run preview` | Abre a versão final gerada pelo `build` |
 
 ## Estrutura das pastas
 
